@@ -86,11 +86,20 @@ def main():
     p = len(opt_params) // 2
     betas, gammas = opt_params[:p], opt_params[p:]
 
+    # ПРИМІТКА: slack-змінні в dimod отримують випадкове UUID-ім'я при кожній
+    # генерації BQM (cqm_to_bqm), тому var_order тут НЕ буде збігатись з тим,
+    # що збережено в qaoa_ising_params.json — це нормально й не проблема:
+    # оптимальні кути (betas, gammas) — це кути QAOA-шарів, не прив'язані до
+    # конкретних імен змінних, тому застосовуються напряму до щойно
+    # побудованого Ising-гамільтоніана (та сама структура задачі/та сама
+    # кількість кубітів, лише інші внутрішні імена slack-змінних).
     ising, var_order, invert = build_ising()
-    assert var_order == saved["var_order"], (
-        "Порядок змінних не збігається зі збереженим qaoa_ising_params.json — "
-        "перезапусти qaoa.py, щоб перегенерувати файл"
-    )
+    if len(var_order) != len(saved["var_order"]):
+        raise RuntimeError(
+            f"Кількість кубітів не збігається: щойно побудовано {len(var_order)}, "
+            f"збережено {len(saved['var_order'])} — структура задачі змінилась, "
+            f"перезапусти qaoa.py"
+        )
 
     circ = build_circuit(ising, var_order, betas, gammas)
 
