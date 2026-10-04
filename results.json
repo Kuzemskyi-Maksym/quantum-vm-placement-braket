@@ -3,7 +3,7 @@
     "method": "CP-SAT (точний, повний інстанс)",
     "active_pms": 3,
     "feasible": true,
-    "runtime_s": 0.0082,
+    "runtime_s": 0.0669,
     "approx_ratio_r": 1.0,
     "task_id": null,
     "cost_usd": null
@@ -12,7 +12,7 @@
     "method": "MBFD (повний інстанс)",
     "active_pms": 3,
     "feasible": true,
-    "runtime_s": 1.4e-05,
+    "runtime_s": 1.5e-05,
     "approx_ratio_r": 1.0,
     "task_id": null,
     "cost_usd": null
@@ -21,7 +21,7 @@
     "method": "Генетичний алгоритм (повний інстанс)",
     "active_pms": 3,
     "feasible": true,
-    "runtime_s": 0.06,
+    "runtime_s": 0.0766,
     "approx_ratio_r": 1.0,
     "task_id": null,
     "cost_usd": null
@@ -30,16 +30,16 @@
     "method": "SimulatedAnnealingSampler (повний інстанс, класична емуляція відпалу)",
     "active_pms": 3,
     "feasible": true,
-    "runtime_s": 3.007,
+    "runtime_s": 2.6841,
     "approx_ratio_r": 1.0,
     "task_id": null,
     "cost_usd": null
   },
   {
     "method": "QAOA (p=2, Aer-симулятор, ЗМЕНШЕНИЙ під-інстанс 3ВМ/2ФС через ліміт кубітів)",
-    "active_pms": 1,
+    "active_pms": 2,
     "feasible": true,
-    "runtime_s": 6.213,
+    "runtime_s": 8.7233,
     "approx_ratio_r": null,
     "task_id": null,
     "cost_usd": null
