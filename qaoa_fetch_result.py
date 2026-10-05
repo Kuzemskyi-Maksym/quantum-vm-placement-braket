@@ -72,7 +72,8 @@ def main():
     best = None
     best_active = None
     for bitstring, count in counts.items():
-        sample = {var_order[k]: int(bitstring[k]) for k in real_idx}
+        # spin +1 <-> binary 1, Z|0> = +1 => binary = 1 - bit
+        sample = {var_order[k]: 1 - int(bitstring[k]) for k in real_idx}
         assignment = decode_sample_to_assignment(sample, invert=None, n=REDUCED_N, m=REDUCED_M)
         if None in assignment:
             continue

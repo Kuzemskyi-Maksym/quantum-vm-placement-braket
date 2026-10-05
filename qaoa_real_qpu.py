@@ -119,7 +119,8 @@ def main():
 
     best_assignment, best_active, best_feasible_found = None, None, False
     for bitstring, count in sorted(counts.items(), key=lambda kv: -kv[1]):
-        sample = {var_order[k]: int(bitstring[k]) for k in range(n)}
+        # spin +1 <-> binary 1, Z|0> = +1 => binary = 1 - bit
+        sample = {var_order[k]: 1 - int(bitstring[k]) for k in range(n)}
         assignment = decode_sample_to_assignment(sample, invert=invert, n=REDUCED_N, m=REDUCED_M)
         if None not in assignment:
             feasible = reduced_is_feasible(assignment)

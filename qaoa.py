@@ -161,7 +161,8 @@ def run_qaoa(p=2, shots=2000, maxiter=50, seed=42):
     best_assignment, best_active, best_feasible_found = None, None, False
     for bitstring, count in sorted(final_counts.items(), key=lambda kv: -kv[1]):
         bits = bitstring.replace(" ", "")[::-1]
-        sample = {var_order[k]: (1 if bits[k] == "1" else 0) for k in range(n_qubits)}
+        # гамільтоніан з bqm.spin: spin +1 <-> binary 1, а Z|0> = +1 => binary = 1 - bit
+        sample = {var_order[k]: (0 if bits[k] == "1" else 1) for k in range(n_qubits)}
         assignment = decode_sample_to_assignment(sample, invert=invert, n=REDUCED_N, m=REDUCED_M)
         if None not in assignment:
             feasible = reduced_is_feasible(assignment)
