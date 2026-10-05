@@ -1,6 +1,8 @@
 """
 Slack-free QAOA (інстанс B, 8 кубітів) на реальному QPU IQM Garnet (eu-north-1).
 
+Інстанс обирається змінною QAOA_INSTANCE (B за замовчуванням, C = спільний 4 ВМ/2 ФС, 10 кубітів).
+
 Режими:
   python qaoa_noslack_real_qpu.py local            # безкоштовно: локальний симулятор Braket, перевірка схеми
   python qaoa_noslack_real_qpu.py submit [P] [SHOTS]  # ПЛАТНО: P=2, SHOTS=1000 за замовчуванням (~$1.75)
@@ -85,7 +87,7 @@ def main():
         if st != "COMPLETED":
             print("Результату немає"); return
         out = analyze(task.result().measurement_counts, "IQM Garnet")
-        json.dump(out, open("noslack_qpu_result.json", "w"), indent=2, ensure_ascii=False)
+        json.dump(out, open("noslack_qpu_result_" + nz.NAME + ".json", "w"), indent=2, ensure_ascii=False)
         return
 
     p = int(sys.argv[2]) if len(sys.argv) > 2 else 2
@@ -110,8 +112,8 @@ def main():
         dev = AwsDevice(DEVICE_ARN, aws_session=sess)
         task = dev.run(circ, shots=shots)
         print("Task ID:", task.id)
-        open("noslack_control_task.txt" if is_control else "noslack_task.txt", "w").write(task.id)
-        print("Збережено у noslack_task.txt. Результат: python qaoa_noslack_real_qpu.py fetch <Task ID>")
+        open(("noslack_control_task_" if is_control else "noslack_task_") + nz.NAME + ".txt", "w").write(task.id)
+        print("Task ID збережено у noslack_[control_]task_<інстанс>.txt. Результат: python qaoa_noslack_real_qpu.py fetch <Task ID>")
 
 
 if __name__ == "__main__":
