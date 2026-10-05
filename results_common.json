@@ -1,0 +1,39 @@
+{
+  "instance": {
+    "vm_loads": [
+      6,
+      5,
+      2,
+      1
+    ],
+    "pm_capacity": [
+      12,
+      12
+    ],
+    "T": 0.9
+  },
+  "CP-SAT": {
+    "active_pms": 2,
+    "optimal_proved": "OPTIMAL",
+    "runtime_s": 0.3180607379999856
+  },
+  "MBFD": {
+    "active_pms": 2,
+    "feasible": true,
+    "runtime_s": 1.6730999959690962e-05
+  },
+  "GA": {
+    "optimum_rate": 1.0,
+    "median_runtime_s": 0.0629947169999241,
+    "best_active_pms": 2
+  },
+  "Annealing": {
+    "optimum_rate": 1.0,
+    "median_runtime_s": 1.7898160895000501,
+    "best_active_pms": 2
+  },
+  "QAOA": {
+    "n_qubits": 10,
+    "baseline_optimal": 0.0078125
+  }
+}

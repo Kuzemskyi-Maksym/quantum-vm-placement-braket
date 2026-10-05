@@ -13,7 +13,8 @@ from qiskit_aer.noise import NoiseModel, depolarizing_error, ReadoutError
 from qaoa_noslack import build, INSTANCES, LAM, T
 from qaoa_exact import qaoa_state
 
-NAME = "B"
+import os
+NAME = os.environ.get("QAOA_INSTANCE", "B")
 loads, caps = INSTANCES[NAME]
 N, M = len(loads), len(caps)
 n, E, onehot, feasible, optimal, best = build(loads, caps)
@@ -81,7 +82,7 @@ def main(ps=(1, 2, 3), levels=((0, 0, 0), (0.0005, 0.005, 0.01), (0.001, 0.01, 0
             r = minimize(lambda x: float((np.abs(qaoa_state(Ez, x, n)) ** 2) @ Ez), x0, method="L-BFGS-B")
             if bestr is None or r.fun < bestr.fun: bestr = r
         qc = circuit(bestr.x)
-        tqc = transpile(qc, basis_gates=["rz", "sx", "x", "cx"], coupling_map=grid_map(), optimization_level=1, seed_transpiler=1)
+        tqc = transpile(qc, basis_gates=["rz", "sx", "x", "cx"], coupling_map=grid_map(*((3, 4) if n > 9 else (3, 3))), optimization_level=1, seed_transpiler=1)
         ops = tqc.count_ops()
         print(f"\np={p}: cx={ops.get('cx',0)} глибина={tqc.depth()}")
         # mapping: після transpile вимір на фізичні кубіти → classical bit k = логічний k (measure_all зберігає clbit)
