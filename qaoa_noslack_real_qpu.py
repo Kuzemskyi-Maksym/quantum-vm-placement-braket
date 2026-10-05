@@ -4,6 +4,8 @@ Slack-free QAOA (інстанс B, 8 кубітів) на реальному QPU
 Режими:
   python qaoa_noslack_real_qpu.py local            # безкоштовно: локальний симулятор Braket, перевірка схеми
   python qaoa_noslack_real_qpu.py submit [P] [SHOTS]  # ПЛАТНО: P=2, SHOTS=1000 за замовчуванням (~$1.75)
+  python qaoa_noslack_real_qpu.py control [P] [SHOTS] # ПЛАТНО: КОНТРОЛЬ — та сама схема, але ВИПАДКОВІ кути (P=2, SHOTS=700 ≈ $1.32)
+  python qaoa_noslack_real_qpu.py control_local    # безкоштовно: контроль на локальному симуляторі
   python qaoa_noslack_real_qpu.py fetch <task-arn> # безкоштовно: забрати результат за Task ID
 
 submit НЕ чекає на результат: одразу друкує Task ID і зберігає у noslack_task.txt
@@ -87,23 +89,28 @@ def main():
         return
 
     p = int(sys.argv[2]) if len(sys.argv) > 2 else 2
-    shots = int(sys.argv[3]) if len(sys.argv) > 3 else 1000
-    params = best_angles(p)
+    is_control = mode in ("control", "control_local")
+    shots = int(sys.argv[3]) if len(sys.argv) > 3 else (700 if is_control else 1000)
+    if is_control:
+        rng = np.random.default_rng(123)   # фіксований seed -> відтворюваний контроль
+        params = np.concatenate([rng.uniform(0, np.pi / 2, p), rng.uniform(0, 2 * np.pi, p)])
+    else:
+        params = best_angles(p)
     circ = braket_circuit(params)
     ideal = np.abs(qaoa_state(nz.Ez, params, nz.n)) ** 2
     print(f"p={p}, ідеальні P(допустимі)={ideal[nz.feasible].sum():.3f}, baseline {nz.feasible.mean():.3f}")
 
-    if mode == "local":
+    if mode in ("local", "control_local"):
         res = LocalSimulator().run(circ, shots=20000).result()
         analyze(res.measurement_counts, "Braket local simulator (noiseless)")
-    elif mode == "submit":
+    elif mode in ("submit", "control"):
         cost = 0.30 + shots * 0.00145
         print(f"Відправка на Garnet: {shots} shots, орієнтовна вартість ≈ ${cost:.2f}")
         sess = AwsSession(boto3.Session(region_name=REGION))
         dev = AwsDevice(DEVICE_ARN, aws_session=sess)
         task = dev.run(circ, shots=shots)
         print("Task ID:", task.id)
-        open("noslack_task.txt", "w").write(task.id)
+        open("noslack_control_task.txt" if is_control else "noslack_task.txt", "w").write(task.id)
         print("Збережено у noslack_task.txt. Результат: python qaoa_noslack_real_qpu.py fetch <Task ID>")
 
 
