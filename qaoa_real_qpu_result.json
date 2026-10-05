@@ -1,0 +1,28 @@
+{
+  "method": "QAOA на реальному QPU (IQM Garnet, eu-north-1), p=2, кути з Aer",
+  "task_id": "arn:aws:braket:eu-north-1:573086082388:quantum-task/0cbf3ec1-71fe-42ba-b0ae-2a8836b42c76",
+  "shots": 100,
+  "unique_bitstrings": 100,
+  "valid_one_hot_shots": 20,
+  "feasible_shots": 20,
+  "valid_fraction": 0.2,
+  "feasible_fraction": 0.2,
+  "feasible_active_pms_histogram": {
+    "2": 13,
+    "1": 7
+  },
+  "best_assignment": [
+    0,
+    0,
+    0
+  ],
+  "best_active_pms": 1,
+  "best_pm_loads": [
+    9.0,
+    0.0
+  ],
+  "random_baseline_note": "для порівняння: при рівномірно випадковому виході 16 кубітів частка допустимих була б дуже малою — див. Aer-результат",
+  "created_at": "2026-10-04T11:07:18.521Z",
+  "ended_at": "2026-10-05T00:00:06.209Z",
+  "device_id": "arn:aws:braket:eu-north-1::device/qpu/iqm/Garnet"
+}
