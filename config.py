@@ -14,6 +14,12 @@ import os
 _INSTANCES = {
     "full": ([3, 4, 2, 5, 3, 4], [12, 12, 12]),
     "common": ([6, 5, 2, 1], [12, 12]),
+    # "large" — великий інстанс ЛИШЕ для класичних методів (ГА, BRKGA, CP-SAT): 30 ВМ, 12 ФС.
+    # Навантаження зафіксовано (згенеровано random.Random(7), цілі 2..9), щоб результат відтворювався.
+    "large": (__import__("random").Random(7).choices(range(2, 10), k=30), [20] * 12),
+    # "rand" — випадковий великий інстанс: VMP_SEED (за замовч. 1) і VMP_N (за замовч. 30) задають генерацію.
+    "rand": (__import__("random").Random(int(os.environ.get("VMP_SEED", 1))).choices(
+        range(3, 10), k=int(os.environ.get("VMP_N", 30))), [20] * int(os.environ.get("VMP_N", 30))),
 }
 _name = os.environ.get("VMP_INSTANCE", "full")
 
