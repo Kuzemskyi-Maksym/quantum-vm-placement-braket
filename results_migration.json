@@ -1,0 +1,703 @@
+{
+  "instance": {
+    "vm_loads": [
+      6,
+      5,
+      2,
+      1
+    ],
+    "pm_capacity": [
+      12,
+      12,
+      12
+    ],
+    "T": 0.9,
+    "x0": [
+      0,
+      1,
+      2,
+      2
+    ]
+  },
+  "mu=0.0": {
+    "exact": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.0
+    },
+    "x0": {
+      "assignment": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "active_pms": 3,
+      "migrations": 0,
+      "migration_cost": 0.0,
+      "objective": 3.0
+    },
+    "CP-SAT": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.0,
+      "status": "OPTIMAL",
+      "runtime_s": 0.022352699999828474
+    },
+    "MBFD (повна переукладка)": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.0
+    },
+    "BRKGA": {
+      "optimum_rate": 1.0,
+      "mean_objective": 2.0,
+      "median_runtime_s": 0.04860329999996793,
+      "best": {
+        "assignment": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "active_pms": 2,
+        "migrations": 2,
+        "migration_cost": 0.2143,
+        "objective": 2.0
+      }
+    },
+    "random_neighbor": {
+      "d=1": {
+        "mu": 0.0,
+        "d": 1,
+        "p_better": 0.25,
+        "mean_migc_better": 0.39285714285714285
+      },
+      "d=2": {
+        "mu": 0.0,
+        "d": 2,
+        "p_better": 0.4,
+        "mean_migc_better": 0.4428571428571429
+      }
+    },
+    "warm_qaoa": {
+      "p=1": {
+        "mu": 0.0,
+        "p": 1,
+        "F0": 3.0,
+        "p_better": 0.014220794320231411,
+        "p_feasible": 0.06307129838876224,
+        "mean_migc_better": 0.4524966765414167,
+        "best_seen": {
+          "assignment": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "active_pms": 2,
+          "migrations": 1,
+          "migration_cost": 0.42857142857142855,
+          "objective": 2.0,
+          "prob": 0.004432594249459291
+        },
+        "angles": [
+          0.4748817830751242,
+          49.1898229359962,
+          0.47813379294471453
+        ],
+        "runtime_s": 19.158952951431274
+      },
+      "p=2": {
+        "mu": 0.0,
+        "p": 2,
+        "F0": 3.0,
+        "p_better": 0.06062137441387729,
+        "p_feasible": 0.13244332256402416,
+        "mean_migc_better": 0.5143498633696919,
+        "best_seen": {
+          "assignment": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "active_pms": 2,
+          "migrations": 1,
+          "migration_cost": 0.42857142857142855,
+          "objective": 2.0,
+          "prob": 0.013805575306996519
+        },
+        "angles": [
+          2.787429975711127,
+          43.162153912028735,
+          39.172410514854334,
+          2.610456106310655,
+          2.7899488032140165
+        ],
+        "runtime_s": 70.08454728126526
+      }
+    }
+  },
+  "mu=0.5": {
+    "exact": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.1071
+    },
+    "x0": {
+      "assignment": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "active_pms": 3,
+      "migrations": 0,
+      "migration_cost": 0.0,
+      "objective": 3.0
+    },
+    "CP-SAT": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.1071,
+      "status": "OPTIMAL",
+      "runtime_s": 0.013681600000381877
+    },
+    "MBFD (повна переукладка)": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.1071
+    },
+    "BRKGA": {
+      "optimum_rate": 1.0,
+      "mean_objective": 2.1071,
+      "median_runtime_s": 0.0346746000004714,
+      "best": {
+        "assignment": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "active_pms": 2,
+        "migrations": 2,
+        "migration_cost": 0.2143,
+        "objective": 2.1071
+      }
+    },
+    "random_neighbor": {
+      "d=1": {
+        "mu": 0.5,
+        "d": 1,
+        "p_better": 0.25,
+        "mean_migc_better": 0.39285714285714285
+      },
+      "d=2": {
+        "mu": 0.5,
+        "d": 2,
+        "p_better": 0.4,
+        "mean_migc_better": 0.4428571428571429
+      }
+    },
+    "warm_qaoa": {
+      "p=1": {
+        "mu": 0.5,
+        "p": 1,
+        "F0": 3.0,
+        "p_better": 0.0149370735267462,
+        "p_feasible": 0.06640649363912239,
+        "mean_migc_better": 0.4527470425598817,
+        "best_seen": {
+          "assignment": [
+            0,
+            2,
+            2,
+            2
+          ],
+          "active_pms": 2,
+          "migrations": 1,
+          "migration_cost": 0.35714285714285715,
+          "objective": 2.1785714285714284,
+          "prob": 0.0046178894283095935
+        },
+        "angles": [
+          2.66352965588823,
+          49.10837207910299,
+          2.670366655380769
+        ],
+        "runtime_s": 17.710944652557373
+      },
+      "p=2": {
+        "mu": 0.5,
+        "p": 2,
+        "F0": 3.0,
+        "p_better": 0.06366025350246837,
+        "p_feasible": 0.13923463570022082,
+        "mean_migc_better": 0.511668157633095,
+        "best_seen": {
+          "assignment": [
+            0,
+            2,
+            2,
+            2
+          ],
+          "active_pms": 2,
+          "migrations": 1,
+          "migration_cost": 0.35714285714285715,
+          "objective": 2.1785714285714284,
+          "prob": 0.014610000947437881
+        },
+        "angles": [
+          2.784377303595019,
+          43.351364408942445,
+          39.3501203239885,
+          2.6109025576753515,
+          2.79478460906553
+        ],
+        "runtime_s": 59.79053616523743
+      }
+    }
+  },
+  "mu=1.0": {
+    "exact": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.2143
+    },
+    "x0": {
+      "assignment": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "active_pms": 3,
+      "migrations": 0,
+      "migration_cost": 0.0,
+      "objective": 3.0
+    },
+    "CP-SAT": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.2143,
+      "status": "OPTIMAL",
+      "runtime_s": 0.01635179999993852
+    },
+    "MBFD (повна переукладка)": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.2143
+    },
+    "BRKGA": {
+      "optimum_rate": 1.0,
+      "mean_objective": 2.2143,
+      "median_runtime_s": 0.034125549999771465,
+      "best": {
+        "assignment": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "active_pms": 2,
+        "migrations": 2,
+        "migration_cost": 0.2143,
+        "objective": 2.2143
+      }
+    },
+    "random_neighbor": {
+      "d=1": {
+        "mu": 1.0,
+        "d": 1,
+        "p_better": 0.25,
+        "mean_migc_better": 0.39285714285714285
+      },
+      "d=2": {
+        "mu": 1.0,
+        "d": 2,
+        "p_better": 0.39999999999999997,
+        "mean_migc_better": 0.44285714285714284
+      }
+    },
+    "warm_qaoa": {
+      "p=1": {
+        "mu": 1.0,
+        "p": 1,
+        "F0": 3.0,
+        "p_better": 0.015548634800000505,
+        "p_feasible": 0.06991574649292968,
+        "mean_migc_better": 0.4507649779089983,
+        "best_seen": {
+          "assignment": [
+            0,
+            2,
+            2,
+            2
+          ],
+          "active_pms": 2,
+          "migrations": 1,
+          "migration_cost": 0.35714285714285715,
+          "objective": 2.357142857142857,
+          "prob": 0.004786713568281137
+        },
+        "angles": [
+          2.6608235067963717,
+          49.00025618345672,
+          2.6782608793660896
+        ],
+        "runtime_s": 24.50762677192688
+      },
+      "p=2": {
+        "mu": 1.0,
+        "p": 2,
+        "F0": 3.0,
+        "p_better": 0.06558006847516386,
+        "p_feasible": 0.148520206837649,
+        "mean_migc_better": 0.49897627173099085,
+        "best_seen": {
+          "assignment": [
+            0,
+            2,
+            2,
+            2
+          ],
+          "active_pms": 2,
+          "migrations": 1,
+          "migration_cost": 0.35714285714285715,
+          "objective": 2.357142857142857,
+          "prob": 0.015682429415556382
+        },
+        "angles": [
+          2.7835675610129558,
+          43.59291369934649,
+          39.45676323112539,
+          2.6174624226257226,
+          2.8004528941120137
+        ],
+        "runtime_s": 68.4669542312622
+      }
+    }
+  },
+  "mu=2.0": {
+    "exact": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.4286
+    },
+    "x0": {
+      "assignment": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "active_pms": 3,
+      "migrations": 0,
+      "migration_cost": 0.0,
+      "objective": 3.0
+    },
+    "CP-SAT": {
+      "assignment": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.4286,
+      "status": "OPTIMAL",
+      "runtime_s": 0.015641100000721053
+    },
+    "MBFD (повна переукладка)": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 2.4286
+    },
+    "BRKGA": {
+      "optimum_rate": 1.0,
+      "mean_objective": 2.4286,
+      "median_runtime_s": 0.03779905000010331,
+      "best": {
+        "assignment": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "active_pms": 2,
+        "migrations": 2,
+        "migration_cost": 0.2143,
+        "objective": 2.4286
+      }
+    },
+    "random_neighbor": {
+      "d=1": {
+        "mu": 2.0,
+        "d": 1,
+        "p_better": 0.25,
+        "mean_migc_better": 0.39285714285714285
+      },
+      "d=2": {
+        "mu": 2.0,
+        "d": 2,
+        "p_better": 0.2,
+        "mean_migc_better": 0.2571428571428571
+      }
+    },
+    "warm_qaoa": {
+      "p=1": {
+        "mu": 2.0,
+        "p": 1,
+        "F0": 3.0,
+        "p_better": 0.012166474231170779,
+        "p_feasible": 0.09514417197788663,
+        "mean_migc_better": 0.3884382724507924,
+        "best_seen": {
+          "assignment": [
+            0,
+            2,
+            2,
+            2
+          ],
+          "active_pms": 2,
+          "migrations": 1,
+          "migration_cost": 0.35714285714285715,
+          "objective": 2.7142857142857144,
+          "prob": 0.005351572292339873
+        },
+        "angles": [
+          2.688887608102664,
+          51.51409708647331,
+          2.7044574526640024
+        ],
+        "runtime_s": 13.82771110534668
+      },
+      "p=2": {
+        "mu": 2.0,
+        "p": 2,
+        "F0": 3.0,
+        "p_better": 0.04437278463417809,
+        "p_feasible": 0.19892961415343274,
+        "mean_migc_better": 0.38947877939230885,
+        "best_seen": {
+          "assignment": [
+            0,
+            2,
+            2,
+            2
+          ],
+          "active_pms": 2,
+          "migrations": 1,
+          "migration_cost": 0.35714285714285715,
+          "objective": 2.7142857142857144,
+          "prob": 0.019215995824576577
+        },
+        "angles": [
+          2.796068978455829,
+          45.83705146240157,
+          40.31686557144382,
+          2.676839601357348,
+          2.8197665683998463
+        ],
+        "runtime_s": 47.29841470718384
+      }
+    }
+  },
+  "mu=5.0": {
+    "exact": {
+      "assignment": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "active_pms": 3,
+      "migrations": 0,
+      "migration_cost": 0.0,
+      "objective": 3.0
+    },
+    "x0": {
+      "assignment": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "active_pms": 3,
+      "migrations": 0,
+      "migration_cost": 0.0,
+      "objective": 3.0
+    },
+    "CP-SAT": {
+      "assignment": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "active_pms": 3,
+      "migrations": 0,
+      "migration_cost": 0.0,
+      "objective": 3.0,
+      "status": "OPTIMAL",
+      "runtime_s": 0.012230799999997544
+    },
+    "MBFD (повна переукладка)": {
+      "assignment": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "active_pms": 2,
+      "migrations": 2,
+      "migration_cost": 0.2143,
+      "objective": 3.0714
+    },
+    "BRKGA": {
+      "optimum_rate": 1.0,
+      "mean_objective": 3.0,
+      "median_runtime_s": 0.03639245000022129,
+      "best": {
+        "assignment": [
+          0,
+          1,
+          2,
+          2
+        ],
+        "active_pms": 3,
+        "migrations": 0,
+        "migration_cost": 0.0,
+        "objective": 3.0
+      }
+    },
+    "random_neighbor": {
+      "d=1": {
+        "mu": 5.0,
+        "d": 1,
+        "p_better": 0.0,
+        "mean_migc_better": 0.0
+      },
+      "d=2": {
+        "mu": 5.0,
+        "d": 2,
+        "p_better": 0.0,
+        "mean_migc_better": 0.0
+      }
+    },
+    "warm_qaoa": {
+      "p=1": {
+        "mu": 5.0,
+        "p": 1,
+        "F0": 3.0,
+        "p_better": 0.0,
+        "p_feasible": 7.920632374981479e-05,
+        "mean_migc_better": 0.0,
+        "best_seen": null,
+        "angles": [
+          1.6079350561067187,
+          59.71939531762717,
+          0.45289078026435103
+        ],
+        "runtime_s": 0.6529116630554199
+      },
+      "p=2": {
+        "mu": 5.0,
+        "p": 2,
+        "F0": 3.0,
+        "p_better": 0.0,
+        "p_feasible": 0.0040021502375867215,
+        "mean_migc_better": 0.0,
+        "best_seen": null,
+        "angles": [
+          1.6079350561067187,
+          59.71939531762717,
+          9.05781560528702,
+          2.980270133958384,
+          0.9796473987943792
+        ],
+        "runtime_s": 1.4238066673278809
+      }
+    }
+  }
+}

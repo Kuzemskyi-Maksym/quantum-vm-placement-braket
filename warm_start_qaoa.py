@@ -6,18 +6,28 @@
 M — змішувач RX(2b) на кожному кубіті. Перший змішувач потрібен, бо фаза на чистому
 базисному стані — лише глобальна фаза (без нього перший шар P нічого б не дав).
 Порівнюємо з холодним стартом (|+>^n) і з класичним випадковим пошуком сусідів.
-Інстанс W: ВМ [6,5,2,1], ФС [12,12,12] (T=0.9, ліміт 10.8), 15 кубітів, оптимум = 2 ФС.
-Запуск: python warm_start_qaoa.py
+Інстанс W (config, VMP_INSTANCE=W): ВМ [6,5,2,1], ФС [12,12,12] (T=0.9, ліміт 10.8), 15 кубітів,
+оптимум = 2 ФС, x0 = [0,1,2,2].
+
+Критерій міграцій (рішення Жарікова 2026-11-01): F(x) = активні ФС + MU · Σ s_j·[ВМ j переїхала] / Σ s_j.
+У гамільтоніан член міграцій входить як ЛІНІЙНІ поля на кубітах x_{j, x0[j]} — нових кубітів не потрібно.
+«Кращий за x0» означає F(x) < F(x0) серед допустимих. MU = 0 відтворює стару постановку (лише ФС).
+
+Запуск:
+  python warm_start_qaoa.py                 # стара таблиця (середня енергія), MU з config/VMP_MU
+  python warm_start_qaoa.py pbetter         # ціль «максимум P(кращий за x0)»
+  python warm_start_qaoa.py pbetter --mu 1  # те саме з явним MU
 """
-import itertools, time
+import os, sys, time
+os.environ.setdefault("VMP_INSTANCE", "W")
 import numpy as np
 from scipy.optimize import minimize
 from qaoa_noslack import build
 from qaoa_exact import apply_mixer, qaoa_state
+from config import VM_LOADS as LOADS, PM_CAPACITY as CAPS, X0 as X0_ASSIGN, MU, TOTAL_LOAD
 
-LOADS, CAPS = [6, 5, 2, 1], [12, 12, 12]
 N, M = len(LOADS), len(CAPS)
-X0_ASSIGN = [0, 1, 2, 2]          # поточний розподіл: ВМ0->ФС0, ВМ1->ФС1, ВМ2,ВМ3->ФС2 (3 активні ФС)
+assert X0_ASSIGN is not None, "для warm start потрібен поточний розподіл X0 (VMP_INSTANCE=W або VMP_X0=...)"
 
 
 def basis_index(assign, n):
@@ -38,7 +48,7 @@ def decode_states(n):
     xs = np.stack([X[:, j * M:(j + 1) * M] for j in range(N)], 1)
     assign = xs.argmax(2)
     active = X[:, N * M:].sum(1)
-    return assign, active
+    return X, assign, active
 
 
 def warm_state(Ez, params, n, idx0):
@@ -53,87 +63,141 @@ def warm_state(Ez, params, n, idx0):
     return psi
 
 
-def report(tag, pr, onehot, feasible, optimal, better, mig):
-    ok = onehot & feasible
-    em = (pr[ok] * mig[ok]).sum() / max(pr[ok].sum(), 1e-12)
-    print(f"{tag:34s} one-hot {pr[onehot].sum():.3f} | допуст. {pr[feasible].sum():.3f} | "
-          f"кращі за x0 {pr[better].sum():.3f} | оптимум {pr[optimal].sum():.4f} | "
-          f"сер. міграцій (допуст.) {em:.2f}")
-
-
-def main(ps=(1, 2, 3), restarts=25, seed=0):
-    t0 = time.time()
+def problem(mu):
+    """Інстанс W з членом міграцій. Повертає все потрібне для оцінки станів."""
     n, E, onehot, feasible, optimal, best = build(LOADS, CAPS)
-    assign, active = decode_states(n)
+    X, assign, active = decode_states(n)
+    x0 = np.array(X0_ASSIGN)
     idx0 = basis_index(X0_ASSIGN, n)
-    mig = (assign != np.array(X0_ASSIGN)[None, :]).sum(1)
-    better = feasible & (active < 3)
-    Ez = (E - E.min()) / (E.max() - E.min())
-    print(f"Інстанс W: ВМ={LOADS}, ФС={CAPS}, кубітів={n}, оптимум={best} ФС; старт x0={X0_ASSIGN} (3 активні ФС, "
-          f"енергія x0 = {E[idx0]:.2f}, мінімум = {E.min():.2f}); feasible x0: {bool(feasible[idx0])}")
-    uni = np.full(2 ** n, 1 / 2 ** n)
-    report("випадково (рівномірно, всі стани)", uni, onehot, feasible, optimal, better, mig)
+    moved = assign != x0[None, :]
+    mig = moved.sum(1)                                                     # кількість міграцій
+    migc = (moved * np.array(LOADS, dtype=float)[None, :]).sum(1) / TOTAL_LOAD   # зважена вартість ∈ [0,1]
+    # член міграцій як лінійні поля: mu·s_j/Σs · (1 − x_{j,x0[j]})
+    Emig = sum(mu * LOADS[j] / TOTAL_LOAD * (1 - X[:, j * M + x0[j]]) for j in range(N))
+    Etot = E + Emig
+    F = active + mu * migc                                                 # «істинна» ціль для допустимих станів
+    F0 = F[idx0]
+    better = feasible & (F < F0 - 1e-9)
+    Ez = (Etot - Etot.min()) / (Etot.max() - Etot.min())
+    return dict(n=n, Ez=Ez, E=Etot, onehot=onehot, feasible=feasible, optimal=optimal, best=best,
+                assign=assign, active=active, mig=mig, migc=migc, F=F, F0=F0, better=better, idx0=idx0)
 
-    # класичний випадковий сусід: усі допустимі розподіли на відстані d від x0, рівноімовірно
+
+def report(tag, pr, P):
+    ok = P["onehot"] & P["feasible"]
+    em = (pr[ok] * P["mig"][ok]).sum() / max(pr[ok].sum(), 1e-12)
+    bt = P["better"]
+    emb = (pr[bt] * P["migc"][bt]).sum() / max(pr[bt].sum(), 1e-12)
+    print(f"{tag:34s} one-hot {pr[P['onehot']].sum():.3f} | допуст. {pr[P['feasible']].sum():.3f} | "
+          f"кращі за x0 {pr[bt].sum():.3f} | оптимум(ФС) {pr[P['optimal']].sum():.4f} | "
+          f"сер. міграцій (допуст.) {em:.2f} | сер. варт. мігр. (кращі) {emb:.2f}")
+
+
+def best_seen(pr, P, shots=1000):
+    """Найкращий за F допустимий стан серед тих, що з'явилися б за `shots` вимірювань (pr ≥ 1/shots)."""
+    cand = P["feasible"] & (pr >= 1.0 / shots)
+    if not cand.any():
+        return None
+    i = np.flatnonzero(cand)[np.argmin(P["F"][cand])]
+    return dict(assignment=P["assign"][i].tolist(), active_pms=int(P["active"][i]),
+                migrations=int(P["mig"][i]), migration_cost=float(P["migc"][i]), objective=float(P["F"][i]),
+                prob=float(pr[i]))
+
+
+GMAX = 20 * np.pi   # межа для γ: енергія нормована в [0,1], тому різниці енергій сусідніх станів ~1/20,
+                    # і корисні γ — десятки; межа 2π (стара) відсікала їх (γ упиралось у 6.28)
+
+
+def optimize_warm(P, p, bmax, restarts, rng, target="pbetter"):
+    """Підбір кутів теплого старту. target: 'pbetter' — максимум P(кращий за x0); 'energy' — мінімум <E>."""
+    n, Ez, idx0 = P["n"], P["Ez"], P["idx0"]
+    bounds = [(0, bmax)] + [(0, GMAX)] * p + [(0, bmax)] * p
+    if target == "pbetter":
+        f = lambda x: -float((np.abs(warm_state(Ez, x, n, idx0)) ** 2)[P["better"]].sum())
+    else:
+        f = lambda x: float((np.abs(warm_state(Ez, x, n, idx0)) ** 2) @ Ez)
+    best = None
+    for _ in range(restarts):
+        x = np.concatenate([[rng.uniform(0, bmax)], rng.uniform(0, GMAX, p), rng.uniform(0, bmax, p)])
+        r = minimize(f, x, method="L-BFGS-B", bounds=bounds)
+        if best is None or r.fun < best.fun:
+            best = r
+    return best
+
+
+def run_warm(mu=MU, p=2, restarts=25, seed=1, bmax=np.pi, shots=1000):
+    """Для порівняльної таблиці: теплий старт з ціллю P(кращий за x0) при заданому mu."""
+    P = problem(mu)
+    rng = np.random.default_rng(seed)
+    t = time.time()
+    r = optimize_warm(P, p, bmax, restarts, rng)
+    pr = np.abs(warm_state(P["Ez"], r.x, P["n"], P["idx0"])) ** 2
+    bt = P["better"]
+    return dict(mu=mu, p=p, F0=float(P["F0"]), p_better=float(pr[bt].sum()),
+                p_feasible=float(pr[P["feasible"]].sum()),
+                mean_migc_better=float((pr[bt] * P["migc"][bt]).sum() / max(pr[bt].sum(), 1e-12)),
+                best_seen=best_seen(pr, P, shots), angles=r.x.tolist(), runtime_s=time.time() - t)
+
+
+def random_neighbor(mu, d):
+    """Класичний контроль: рівноімовірний допустимий розподіл на відстані d міграцій від x0."""
+    P = problem(mu)
+    sel = P["onehot"] & P["feasible"] & (P["mig"] == d)
+    pr = np.zeros(2 ** P["n"]); pr[sel] = 1 / sel.sum()
+    bt = P["better"]
+    return dict(mu=mu, d=d, p_better=float(pr[bt].sum()),
+                mean_migc_better=float((pr[bt] * P["migc"][bt]).sum() / max(pr[bt].sum(), 1e-12)))
+
+
+def main(ps=(1, 2, 3), restarts=25, seed=0, mu=MU):
+    t0 = time.time()
+    P = problem(mu)
+    n, Ez, idx0 = P["n"], P["Ez"], P["idx0"]
+    print(f"Інстанс W: ВМ={LOADS}, ФС={CAPS}, кубітів={n}, оптимум={P['best']} ФС; старт x0={X0_ASSIGN} "
+          f"(3 активні ФС), MU={mu}, F(x0)={P['F0']:.3f}; feasible x0: {bool(P['feasible'][idx0])}")
+    uni = np.full(2 ** n, 1 / 2 ** n)
+    report("випадково (рівномірно, всі стани)", uni, P)
     for d in (1, 2):
-        sel = onehot & feasible & (mig == d)
+        sel = P["onehot"] & P["feasible"] & (P["mig"] == d)
         pr = np.zeros(2 ** n); pr[sel] = 1 / sel.sum()
-        report(f"класично: випадковий допуст. d={d}", pr, onehot, feasible, optimal, better, mig)
+        report(f"класично: випадковий допуст. d={d}", pr, P)
 
     rng = np.random.default_rng(seed)
     for p in ps:
-        # холодний старт, та сама глибина
         best_c = None
         for _ in range(restarts):
             x = np.concatenate([rng.uniform(0, np.pi / 2, p), rng.uniform(0, 2 * np.pi, p)])
             r = minimize(lambda x: float((np.abs(qaoa_state(Ez, x, n)) ** 2) @ Ez), x, method="L-BFGS-B")
             if best_c is None or r.fun < best_c.fun: best_c = r
-        pr = np.abs(qaoa_state(Ez, best_c.x, n)) ** 2
-        report(f"QAOA холодний старт p={p}", pr, onehot, feasible, optimal, better, mig)
-
-        # теплий старт: вільні кути, і з обмеженням малого β (близько до x0)
+        report(f"QAOA холодний старт p={p}", np.abs(qaoa_state(Ez, best_c.x, n)) ** 2, P)
         for tag, bmax in (("вільні кути", np.pi), ("β ≤ 0.35 (близько до x0)", 0.35)):
-            bounds = [(0, bmax)] + [(0, 2 * np.pi)] * p + [(0, bmax)] * p
-            best_w = None
-            for _ in range(restarts):
-                x = np.concatenate([[rng.uniform(0, bmax)], rng.uniform(0, 2 * np.pi, p), rng.uniform(0, bmax, p)])
-                f = lambda x: float((np.abs(warm_state(Ez, x, n, idx0)) ** 2) @ Ez)
-                r = minimize(f, x, method="L-BFGS-B", bounds=bounds)
-                if best_w is None or r.fun < best_w.fun: best_w = r
-            pr = np.abs(warm_state(Ez, best_w.x, n, idx0)) ** 2
-            report(f"QAOA теплий старт p={p}, {tag}", pr, onehot, feasible, optimal, better, mig)
+            r = optimize_warm(P, p, bmax, restarts, rng, target="energy")
+            report(f"QAOA теплий старт p={p}, {tag}", np.abs(warm_state(Ez, r.x, n, idx0)) ** 2, P)
         print(f"  [{time.time()-t0:.0f}s]")
 
 
-def main_pbetter(ps=(1, 2), restarts=25, seed=1):
+def main_pbetter(ps=(1, 2), restarts=25, seed=1, mu=MU):
     """Теплий старт з ЦІЛЛЮ «максимум P(кращий за x0)» замість мінімуму середньої енергії:
     середня енергія карає будь-який відхід від x0 (більшість сусідів — штрафні стани), тому
     оптимізатор залишається в x0 (β=0). Для циклу «виміряв -> перевірив -> прийняв» важить
     саме ймовірність отримати кращий розподіл за shot."""
     t0 = time.time()
-    n, E, onehot, feasible, optimal, best = build(LOADS, CAPS)
-    assign, active = decode_states(n)
-    idx0 = basis_index(X0_ASSIGN, n)
-    mig = (assign != np.array(X0_ASSIGN)[None, :]).sum(1)
-    better = feasible & (active < 3)
-    Ez = (E - E.min()) / (E.max() - E.min())
+    P = problem(mu)
     rng = np.random.default_rng(seed)
-    print("\n--- мета: максимум P(кращий за x0) ---")
+    print(f"\n--- мета: максимум P(кращий за x0), MU={mu}, F(x0)={P['F0']:.3f} ---")
     for p in ps:
         for tag, bmax in (("вільні кути", np.pi), ("β ≤ 0.35", 0.35)):
-            bounds = [(0, bmax)] + [(0, 2 * np.pi)] * p + [(0, bmax)] * p
-            best_w = None
-            for _ in range(restarts):
-                x = np.concatenate([[rng.uniform(0, bmax)], rng.uniform(0, 2 * np.pi, p), rng.uniform(0, bmax, p)])
-                f = lambda x: -float((np.abs(warm_state(Ez, x, n, idx0)) ** 2)[better].sum())
-                r = minimize(f, x, method="L-BFGS-B", bounds=bounds)
-                if best_w is None or r.fun < best_w.fun: best_w = r
-            pr = np.abs(warm_state(Ez, best_w.x, n, idx0)) ** 2
-            report(f"теплий старт p={p}, {tag}", pr, onehot, feasible, optimal, better, mig)
-            print(f"     кути: β0={best_w.x[0]:.3f}, γ={np.round(best_w.x[1:1+p],2)}, β={np.round(best_w.x[1+p:],3)}")
+            r = optimize_warm(P, p, bmax, restarts, rng)
+            pr = np.abs(warm_state(P["Ez"], r.x, P["n"], P["idx0"])) ** 2
+            report(f"теплий старт p={p}, {tag}", pr, P)
+            print(f"     кути: β0={r.x[0]:.3f}, γ={np.round(r.x[1:1+p],2)}, β={np.round(r.x[1+p:],3)}")
+            bs = best_seen(pr, P)
+            if bs:
+                print(f"     найкращий стан за 1000 shots: {bs['assignment']} → ФС={bs['active_pms']}, "
+                      f"міграцій={bs['migrations']} (варт. {bs['migration_cost']:.2f}), F={bs['objective']:.3f}")
         print(f"  [{time.time()-t0:.0f}s]")
 
 
 if __name__ == "__main__":
-    import sys
-    main_pbetter() if "pbetter" in sys.argv else main()
+    mu = float(sys.argv[sys.argv.index("--mu") + 1]) if "--mu" in sys.argv else MU
+    main_pbetter(mu=mu) if "pbetter" in sys.argv else main(mu=mu)

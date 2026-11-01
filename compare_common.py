@@ -1,7 +1,9 @@
 """
 ПОРІВНЯННЯ 5 методів на ЄДИНОМУ інстансі (VMP_INSTANCE=common: 4 ВМ [6,5,2,1], 2 ФС [12,12], T=0.9).
 Запуск:  set VMP_INSTANCE=common  (PowerShell: $env:VMP_INSTANCE="common") ; python compare_common.py
-Стохастичні методи (ГА, відпал) — 20 запусків з різними seed: частка запусків, що знайшли оптимум.
+Стохастичні методи (BRKGA, відпал) — 20 запусків з різними seed: частка запусків, що знайшли оптимум.
+ГА в основній таблиці — BRKGA (рішення Жарікова 2026-11-01: лише BRKGA, без базового ГА / COFFGA); базовий ГА
+лишається в genetic.py для compare_ga.py.
 QAOA (slack-free, 10 кубітів) — окремо: $env:QAOA_INSTANCE="C"; python qaoa_noslack_noisy.py (ідеал і шумна симуляція).
 """
 import os, json, time, statistics
@@ -10,7 +12,7 @@ import numpy as np
 from config import VM_LOADS, PM_CAPACITY, T
 from mbfd import run_mbfd
 from cp_sat import run_cp_sat
-from genetic import run_genetic
+from brkga import run_brkga
 from annealing import run_simulated_annealing
 
 SEEDS = range(20)
@@ -27,7 +29,7 @@ def main():
     cp = run_cp_sat(); opt = cp["active_pms"]
     out["CP-SAT"] = {"active_pms": opt, "optimal_proved": cp.get("status") , "runtime_s": cp["runtime_s"]}
     mb = run_mbfd(); out["MBFD"] = {"active_pms": mb["active_pms"], "feasible": mb["feasible"], "runtime_s": mb["runtime_s"]}
-    out["GA"] = summarize([run_genetic(seed=s) for s in SEEDS], opt)
+    out["BRKGA"] = summarize([run_brkga(seed=s, x0=None) for s in SEEDS], opt)   # без міграцій: ціль — лише ФС
     out["Annealing"] = summarize([run_simulated_annealing(seed=s) for s in SEEDS], opt)
     # QAOA slack-free
     import qaoa_noslack as ns, qaoa_noslack_noisy as nz
