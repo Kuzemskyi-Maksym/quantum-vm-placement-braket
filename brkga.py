@@ -13,89 +13,119 @@ BRKGA — Biased Random-Key Genetic Algorithm (ГА зі зміщеними ви
   - у початкову популяцію додано одну особину з порядком First Fit Decreasing
     (найбільші ВМ першими), щоб алгоритм стартував не гірше за MBFD-подібну евристику.
 
-Режим з міграціями (X0 задано, рішення Жарікова 2026-11-01):
-  - ціль F = активні ФС + MU · Σ s_j·[ВМ j переїхала] / Σ s_j (див. config.objective);
+Режим з міграціями (x0 задано, рішення Жарікова 2026-11-01):
+  - ціль F = активні ФС + mu · Σ s_j·[ВМ j переїхала] / Σ s_j (див. config.objective);
   - особина має 2N ключів: перші N — порядок, другі N — прапорець «залишитись»:
     якщо ключ_stay[j] >= 0.5, ВМ j спершу пробує СВІЙ поточний сервер x0[j] (якщо влазить),
     інакше — звичайний First Fit. Так еволюція сама обирає, яких ВМ рухати, а яких ні;
   - у початкову популяцію додано особину «нічого не рухати» (= x0) і особину FFD («повна переукладка»).
+
+Інстанс за замовчуванням — з config (VMP_INSTANCE); `run_brkga(loads=..., caps=...)` розв'язує довільний
+(потрібно для симуляції життєвого циклу, lifecycle_sim.py).
 """
 
 import random
 import time
 
-from config import (VM_LOADS, N, M, EFFECTIVE_CAPACITY, X0, MU,
-                    is_feasible, active_pms, pm_loads, n_migrations, migration_cost)
+import config
+from config import T
 
 PENALTY = 1000.0
 
 
-def decode(keys, x0=None):
+def _loads_of(assignment, loads, m):
+    out = [0.0] * m
+    for j, i in enumerate(assignment):
+        out[i] += loads[j]
+    return out
+
+
+def _mig_cost(assignment, x0, loads):
+    tot = float(sum(loads)) or 1.0
+    return sum(loads[j] for j in range(len(loads)) if assignment[j] != x0[j]) / tot
+
+
+def decode(keys, x0=None, loads=None, eff_caps=None):
     """Ключі -> розклад (assignment[j] = індекс сервера). First Fit у порядку ключів.
     Якщо x0 задано і len(keys) == 2N, ключі N..2N-1 — прапорці «спершу спробувати поточний сервер»."""
-    order = sorted(range(N), key=lambda j: keys[j])
-    stay = keys[N:] if (x0 is not None and len(keys) >= 2 * N) else None
-    loads = [0.0] * M
-    assignment = [None] * N
+    loads = loads if loads is not None else config.VM_LOADS
+    eff_caps = eff_caps if eff_caps is not None else config.EFFECTIVE_CAPACITY
+    n, m = len(loads), len(eff_caps)
+    order = sorted(range(n), key=lambda j: keys[j])
+    stay = keys[n:] if (x0 is not None and len(keys) >= 2 * n) else None
+    cur = [0.0] * m
+    assignment = [None] * n
     for j in order:
         target = None
         if stay is not None and stay[j] >= 0.5:
             i = x0[j]
-            if loads[i] + VM_LOADS[j] <= EFFECTIVE_CAPACITY[i] + 1e-9:
+            if cur[i] + loads[j] <= eff_caps[i] + 1e-9:
                 target = i
         if target is None:
-            for i in range(M):                   # перший сервер, де ВМ влазить (порожні — теж "перший вільний")
-                if loads[i] + VM_LOADS[j] <= EFFECTIVE_CAPACITY[i] + 1e-9:
+            for i in range(m):                   # перший сервер, де ВМ влазить (порожні — теж "перший вільний")
+                if cur[i] + loads[j] <= eff_caps[i] + 1e-9:
                     target = i
                     break
         if target is None:                       # нікуди не влазить: найменш завантажений (недопустимо)
-            target = min(range(M), key=lambda i: loads[i] - EFFECTIVE_CAPACITY[i])
+            target = min(range(m), key=lambda i: cur[i] - eff_caps[i])
         assignment[j] = target
-        loads[target] += VM_LOADS[j]
+        cur[target] += loads[j]
     return assignment
 
 
-def fitness(assignment, x0=None, mu=0.0):
+def fitness(assignment, x0=None, mu=0.0, loads=None, eff_caps=None):
     """Менше — краще: активні ФС + mu·зважені міграції + штраф за перевантаження
     − невеликий бонус за «щільність» (сума квадратів завантажень), що розрізняє розклади
     з однаковою ціллю і веде пошук до «повних» серверів. У режимі міграцій бонус зменшено
     (0.01 замість 0.5), щоб він лишався лише tie-breaker-ом і не перекривав член міграцій."""
-    loads = pm_loads(assignment)
-    overload = sum(max(0.0, loads[i] - EFFECTIVE_CAPACITY[i]) for i in range(M))
-    total = sum(loads) or 1.0
-    density = sum(l * l for l in loads) / (total * total)   # у (0, 1]
-    base = active_pms(assignment) + PENALTY * overload
+    loads = loads if loads is not None else config.VM_LOADS
+    eff_caps = eff_caps if eff_caps is not None else config.EFFECTIVE_CAPACITY
+    m = len(eff_caps)
+    cur = _loads_of(assignment, loads, m)
+    overload = sum(max(0.0, cur[i] - eff_caps[i]) for i in range(m))
+    total = sum(cur) or 1.0
+    density = sum(l * l for l in cur) / (total * total)   # у (0, 1]
+    base = len(set(assignment)) + PENALTY * overload
     if x0 is None:
         return base - 0.5 * density
-    return base + mu * migration_cost(assignment, x0) - 0.01 * density
+    return base + mu * _mig_cost(assignment, x0, loads) - 0.01 * density
 
 
 def run_brkga(pop_size=60, generations=100, elite_frac=0.2, mutant_frac=0.15, rho=0.7, seed=42,
-              seed_ffd=True, x0=X0, mu=MU):
+              seed_ffd=True, x0="config", mu="config", loads=None, caps=None):
+    """x0/mu за замовчуванням — з config (X0, MU); передайте x0=None, щоб вимкнути міграції.
+    loads/caps — довільний інстанс (caps — номінальні місткості, поріг T застосовується тут)."""
+    if x0 == "config":
+        x0 = config.X0
+    if mu == "config":
+        mu = config.MU
+    loads = list(loads) if loads is not None else list(config.VM_LOADS)
+    eff_caps = [T * c for c in caps] if caps is not None else list(config.EFFECTIVE_CAPACITY)
+    n = len(loads)
     start = time.perf_counter()
     rng = random.Random(seed)
     n_elite = max(1, int(pop_size * elite_frac))
     n_mut = max(1, int(pop_size * mutant_frac))
     use_mig = x0 is not None and mu > 0
-    L = 2 * N if use_mig else N                      # довжина особини
+    L = 2 * n if use_mig else n                      # довжина особини
 
     population = [[rng.random() for _ in range(L)] for _ in range(pop_size)]
-    ffd_order = sorted(range(N), key=lambda j: -VM_LOADS[j])
-    ffd_keys = [0.0] * N
+    ffd_order = sorted(range(n), key=lambda j: -loads[j])
+    ffd_keys = [0.0] * n
     for rank, j in enumerate(ffd_order):
-        ffd_keys[j] = rank / N
+        ffd_keys[j] = rank / n
     if seed_ffd:
-        population[0] = ffd_keys + ([0.0] * N if use_mig else [])        # FFD, нічого не «тримати»
+        population[0] = ffd_keys + ([0.0] * n if use_mig else [])        # FFD, нічого не «тримати»
     if use_mig:
-        population[1] = ffd_keys + [1.0] * N                              # «нічого не рухати» = x0
+        population[1] = ffd_keys + [1.0] * n                              # «нічого не рухати» = x0
 
     x0d = x0 if use_mig else None
 
     def evaluate(pop):
         scored = []
         for keys in pop:
-            a = decode(keys, x0d)
-            scored.append((fitness(a, x0d, mu), keys, a))
+            a = decode(keys, x0d, loads, eff_caps)
+            scored.append((fitness(a, x0d, mu, loads, eff_caps), keys, a))
         scored.sort(key=lambda t: t[0])
         return scored
 
@@ -116,15 +146,18 @@ def run_brkga(pop_size=60, generations=100, elite_frac=0.2, mutant_frac=0.15, rh
             best_fit, _, best_assign = scored[0]
 
     elapsed = time.perf_counter() - start
+    cur = _loads_of(best_assign, loads, len(eff_caps))
+    feasible = all(cur[i] <= eff_caps[i] + 1e-9 for i in range(len(eff_caps)))
+    migc = _mig_cost(best_assign, x0, loads) if use_mig else 0.0
     return {
         "method": "BRKGA (ГА зі зміщеними випадковими ключами)",
         "assignment": best_assign,
-        "active_pms": active_pms(best_assign),
-        "feasible": is_feasible(best_assign),
-        "pm_loads": pm_loads(best_assign),
-        "migrations": n_migrations(best_assign, x0) if use_mig else None,
-        "migration_cost": migration_cost(best_assign, x0) if use_mig else None,
-        "objective": active_pms(best_assign) + (mu * migration_cost(best_assign, x0) if use_mig else 0.0),
+        "active_pms": len(set(best_assign)),
+        "feasible": feasible,
+        "pm_loads": cur,
+        "migrations": sum(1 for j in range(n) if best_assign[j] != x0[j]) if use_mig else None,
+        "migration_cost": migc if use_mig else None,
+        "objective": len(set(best_assign)) + (mu * migc if use_mig else 0.0),
         "mu": mu if use_mig else 0.0,
         "runtime_s": elapsed,
         "generations": generations,

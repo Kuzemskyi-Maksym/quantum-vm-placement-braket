@@ -7,7 +7,8 @@
   - BRKGA з ключами «залишитись», 20 запусків: частка запусків, що дійшли до оптимуму F;
   - класичний контроль: випадковий допустимий сусід на 1 і 2 міграції — P(кращий за x0);
   - warm-start QAOA p=1, 2 (точна симуляція, ціль «максимум P(кращий за x0)»): P(кращий), середня вартість
-    міграцій серед кращих, найкращий стан, що з'явився б за 1000 shots.
+    міграцій серед кращих, найкращий стан, що з'явився б за 1000 shots; окремо — p=2 зі змішувачем,
+    зваженим за розміром ВМ (mixer=size, alpha=2).
 Запуск:  $env:VMP_INSTANCE="W"; python compare_migration.py            (результат — results_migration.json)
          python compare_migration.py --no-qaoa                          (лише класичні методи, швидко)
 """
@@ -70,6 +71,7 @@ def main(with_qaoa=True):
         if with_qaoa:
             row["random_neighbor"] = {f"d={d}": ws.random_neighbor(mu, d) for d in (1, 2)}
             row["warm_qaoa"] = {f"p={p}": ws.run_warm(mu=mu, p=p) for p in (1, 2)}
+            row["warm_qaoa"]["p=2, size-mixer a=2"] = ws.run_warm(mu=mu, p=2, mixer="size", alpha=2.0)
         out[f"mu={mu}"] = row
 
         e, x = row["exact"], row["x0"]
@@ -84,10 +86,9 @@ def main(with_qaoa=True):
             for d in (1, 2):
                 r = row["random_neighbor"][f"d={d}"]
                 print(f"  випадковий сусід d={d}: P(кращий за x0)={r['p_better']:.3f}, сер. варт. мігр.={r['mean_migc_better']:.2f}")
-            for p in (1, 2):
-                r = row["warm_qaoa"][f"p={p}"]
+            for key, r in row["warm_qaoa"].items():
                 bs = r["best_seen"]
-                print(f"  warm QAOA p={p}: P(кращий за x0)={r['p_better']:.3f}, допуст.={r['p_feasible']:.3f}, "
+                print(f"  warm QAOA {key}: P(кращий за x0)={r['p_better']:.3f}, допуст.={r['p_feasible']:.3f}, "
                       f"сер. варт. мігр. (кращі)={r['mean_migc_better']:.2f}; найкращий за 1000 shots: "
                       + (f"ФС={bs['active_pms']}, міграцій={bs['migrations']}, F={bs['objective']:.3f} (P={bs['prob']:.3f})" if bs else "—")
                       + f"  [{r['runtime_s']:.0f} с]")

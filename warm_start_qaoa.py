@@ -17,6 +17,11 @@ M — змішувач RX(2b) на кожному кубіті. Перший з�
   python warm_start_qaoa.py                 # стара таблиця (середня енергія), MU з config/VMP_MU
   python warm_start_qaoa.py pbetter         # ціль «максимум P(кращий за x0)»
   python warm_start_qaoa.py pbetter --mu 1  # те саме з явним MU
+  python warm_start_qaoa.py pbetter --mu 1 --mixer size --alpha 2   # змішувач, зважений за розміром ВМ
+
+Змішувач за розміром ВМ (2026-11-02): кубіти ВМ j обертаються на кут β·(s_min/s_j)^alpha, тож малі ВМ
+«рухливіші». На W це подвоює P(кращий за x0) (6% → 12% при p=2) і дає оптимум з двома дешевими міграціями
+замість однієї дорогої, яку обирає звичайний RX.
 """
 import os, sys, time
 os.environ.setdefault("VMP_INSTANCE", "W")
@@ -51,15 +56,38 @@ def decode_states(n):
     return X, assign, active
 
 
-def warm_state(Ez, params, n, idx0):
+def size_weights(alpha=1.0):
+    """Ваги змішувача за розміром ВМ: кубіт x_{j,i} обертається на кут β·(s_min/s_j)^alpha — малі ВМ
+    «рухливіші», великі майже не рухаються; кубіти y_i (сервери) — вага 1. alpha=0 → звичайний RX."""
+    smin = min(LOADS)
+    w = np.ones(N * M + M)
+    for j in range(N):
+        w[j * M:(j + 1) * M] = (smin / LOADS[j]) ** alpha
+    return w
+
+
+def apply_mixer_w(psi, beta, w, n):
+    """RX(2·β·w_k) на кожному кубіті k (поелементно різні кути)."""
+    psi = psi.reshape((2,) * n)
+    for ax in range(n):
+        c, s = np.cos(beta * w[ax]), -1j * np.sin(beta * w[ax])
+        a0 = np.take(psi, 0, axis=ax)
+        a1 = np.take(psi, 1, axis=ax)
+        psi = np.stack([c * a0 + s * a1, s * a0 + c * a1], axis=ax)
+    return psi.reshape(-1)
+
+
+def warm_state(Ez, params, n, idx0, w=None):
+    """Схема теплого старту: |x0> → M(β0) → [P(γ_l) → M(β_l)] × p. w — ваги змішувача (None = звичайний RX)."""
     p = (len(params) - 1) // 2
     b0, gs, bs = params[0], params[1:1 + p], params[1 + p:]
+    mix = (lambda ps, b: apply_mixer(ps, b, n)) if w is None else (lambda ps, b: apply_mixer_w(ps, b, w, n))
     psi = np.zeros(2 ** n, dtype=complex)
     psi[idx0] = 1.0
-    psi = apply_mixer(psi, b0, n)
+    psi = mix(psi, b0)
     for l in range(p):
         psi = psi * np.exp(-1j * gs[l] * Ez)
-        psi = apply_mixer(psi, bs[l], n)
+        psi = mix(psi, bs[l])
     return psi
 
 
@@ -108,14 +136,15 @@ GMAX = 20 * np.pi   # межа для γ: енергія нормована в [
                     # і корисні γ — десятки; межа 2π (стара) відсікала їх (γ упиралось у 6.28)
 
 
-def optimize_warm(P, p, bmax, restarts, rng, target="pbetter"):
-    """Підбір кутів теплого старту. target: 'pbetter' — максимум P(кращий за x0); 'energy' — мінімум <E>."""
+def optimize_warm(P, p, bmax, restarts, rng, target="pbetter", w=None):
+    """Підбір кутів теплого старту. target: 'pbetter' — максимум P(кращий за x0); 'energy' — мінімум <E>.
+    w — ваги змішувача (size_weights) або None."""
     n, Ez, idx0 = P["n"], P["Ez"], P["idx0"]
     bounds = [(0, bmax)] + [(0, GMAX)] * p + [(0, bmax)] * p
     if target == "pbetter":
-        f = lambda x: -float((np.abs(warm_state(Ez, x, n, idx0)) ** 2)[P["better"]].sum())
+        f = lambda x: -float((np.abs(warm_state(Ez, x, n, idx0, w)) ** 2)[P["better"]].sum())
     else:
-        f = lambda x: float((np.abs(warm_state(Ez, x, n, idx0)) ** 2) @ Ez)
+        f = lambda x: float((np.abs(warm_state(Ez, x, n, idx0, w)) ** 2) @ Ez)
     best = None
     for _ in range(restarts):
         x = np.concatenate([[rng.uniform(0, bmax)], rng.uniform(0, GMAX, p), rng.uniform(0, bmax, p)])
@@ -125,15 +154,17 @@ def optimize_warm(P, p, bmax, restarts, rng, target="pbetter"):
     return best
 
 
-def run_warm(mu=MU, p=2, restarts=25, seed=1, bmax=np.pi, shots=1000):
-    """Для порівняльної таблиці: теплий старт з ціллю P(кращий за x0) при заданому mu."""
+def run_warm(mu=MU, p=2, restarts=25, seed=1, bmax=np.pi, shots=1000, mixer="rx", alpha=1.0):
+    """Для порівняльної таблиці: теплий старт з ціллю P(кращий за x0) при заданому mu.
+    mixer: 'rx' — звичайний RX на всіх кубітах; 'size' — кути, зважені за розміром ВМ (size_weights(alpha))."""
     P = problem(mu)
+    w = size_weights(alpha) if mixer == "size" else None
     rng = np.random.default_rng(seed)
     t = time.time()
-    r = optimize_warm(P, p, bmax, restarts, rng)
-    pr = np.abs(warm_state(P["Ez"], r.x, P["n"], P["idx0"])) ** 2
+    r = optimize_warm(P, p, bmax, restarts, rng, w=w)
+    pr = np.abs(warm_state(P["Ez"], r.x, P["n"], P["idx0"], w)) ** 2
     bt = P["better"]
-    return dict(mu=mu, p=p, F0=float(P["F0"]), p_better=float(pr[bt].sum()),
+    return dict(mu=mu, p=p, mixer=mixer, F0=float(P["F0"]), p_better=float(pr[bt].sum()),
                 p_feasible=float(pr[P["feasible"]].sum()),
                 mean_migc_better=float((pr[bt] * P["migc"][bt]).sum() / max(pr[bt].sum(), 1e-12)),
                 best_seen=best_seen(pr, P, shots), angles=r.x.tolist(), runtime_s=time.time() - t)
@@ -176,19 +207,21 @@ def main(ps=(1, 2, 3), restarts=25, seed=0, mu=MU):
         print(f"  [{time.time()-t0:.0f}s]")
 
 
-def main_pbetter(ps=(1, 2), restarts=25, seed=1, mu=MU):
+def main_pbetter(ps=(1, 2), restarts=25, seed=1, mu=MU, mixer="rx", alpha=1.0):
     """Теплий старт з ЦІЛЛЮ «максимум P(кращий за x0)» замість мінімуму середньої енергії:
     середня енергія карає будь-який відхід від x0 (більшість сусідів — штрафні стани), тому
     оптимізатор залишається в x0 (β=0). Для циклу «виміряв -> перевірив -> прийняв» важить
     саме ймовірність отримати кращий розподіл за shot."""
     t0 = time.time()
     P = problem(mu)
+    w = size_weights(alpha) if mixer == "size" else None
     rng = np.random.default_rng(seed)
-    print(f"\n--- мета: максимум P(кращий за x0), MU={mu}, F(x0)={P['F0']:.3f} ---")
+    print(f"\n--- мета: максимум P(кращий за x0), MU={mu}, F(x0)={P['F0']:.3f}, змішувач={mixer}"
+          + (f" (alpha={alpha})" if w is not None else "") + " ---")
     for p in ps:
         for tag, bmax in (("вільні кути", np.pi), ("β ≤ 0.35", 0.35)):
-            r = optimize_warm(P, p, bmax, restarts, rng)
-            pr = np.abs(warm_state(P["Ez"], r.x, P["n"], P["idx0"])) ** 2
+            r = optimize_warm(P, p, bmax, restarts, rng, w=w)
+            pr = np.abs(warm_state(P["Ez"], r.x, P["n"], P["idx0"], w)) ** 2
             report(f"теплий старт p={p}, {tag}", pr, P)
             print(f"     кути: β0={r.x[0]:.3f}, γ={np.round(r.x[1:1+p],2)}, β={np.round(r.x[1+p:],3)}")
             bs = best_seen(pr, P)
@@ -199,5 +232,6 @@ def main_pbetter(ps=(1, 2), restarts=25, seed=1, mu=MU):
 
 
 if __name__ == "__main__":
-    mu = float(sys.argv[sys.argv.index("--mu") + 1]) if "--mu" in sys.argv else MU
-    main_pbetter(mu=mu) if "pbetter" in sys.argv else main(mu=mu)
+    arg = lambda k, d: type(d)(sys.argv[sys.argv.index(k) + 1]) if k in sys.argv else d
+    mu, mixer, alpha = arg("--mu", MU), arg("--mixer", "rx"), arg("--alpha", 1.0)
+    main_pbetter(mu=mu, mixer=mixer, alpha=alpha) if "pbetter" in sys.argv else main(mu=mu)

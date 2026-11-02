@@ -35,7 +35,10 @@
 | `qaoa_noslack.py` | QAOA без slack-бітів, точна симуляція | парні штрафи місткості; 8–15 кубітів |
 | `qaoa_noslack_noisy.py` | те саме з шумом (Aer, топологія 3×3) | ілюстративні рівні помилок |
 | `qaoa_noslack_real_qpu.py` | QAOA на IQM Garnet | режими `local` / `submit p shots` / `fetch <TaskID>` / `control p shots` |
-| `warm_start_qaoa.py` | QAOA з теплим стартом із X0 | ціль «максимум P(кращий за x0)», член міграцій MU |
+| `warm_start_qaoa.py` | QAOA з теплим стартом із X0 | ціль «максимум P(кращий за x0)», член міграцій MU, змішувач за розміром ВМ (`--mixer size --alpha 2`) |
+| `warm_start_noisy.py` | теплий старт з шумом (Aer, сітка 4×4) | чи виживає сигнал при CX ≈ 1–2% — перевірка перед платним прогоном |
+| `placement_new.py` | **Алгоритм 2**: розміщення нових ВМ | Best Fit Decreasing на залишках, перебір, CP-SAT, QAOA лише над новими ВМ (кубіти не залежать від розміру ЦОД) |
+| `lifecycle_sim.py` | симуляція життєвого циклу ЦОД | прибуття → алгоритм 2 → завершення → алгоритм 1 (none / повна переукладка / BRKGA з MU) |
 | `qaoa.py`, `qaoa_exact.py`, `qaoa_real_qpu.py`, `qaoa_fetch_result.py`, `qaoa_aer_control.py` | старе slack-кодування (16 кубітів) | лишено для відтворення перших прогонів |
 
 `cqm_model.py` — CQM/BQM (dimod) для slack-кодування.
@@ -46,7 +49,10 @@ python run_all.py                                              # 5 методі�
 $env:VMP_INSTANCE="common"; python compare_common.py           # 5 методів на common (ГА = BRKGA) → results_common.json
 $env:VMP_INSTANCE="large";  python compare_ga.py               # базовий ГА vs BRKGA на великих інстансах
 $env:VMP_INSTANCE="W";      python compare_migration.py        # ціль з міграціями, MU ∈ {0,0.5,1,2,5} → results_migration.json
-$env:VMP_INSTANCE="W";      python warm_start_qaoa.py pbetter --mu 1
+$env:VMP_INSTANCE="W";      python warm_start_qaoa.py pbetter --mu 1 --mixer size --alpha 2
+$env:VMP_INSTANCE="W";      python warm_start_noisy.py --mu 1 --mixer size --alpha 2   # шумна симуляція (Qiskit)
+python placement_new.py --new 3,4                              # алгоритм 2 на прикладі (3 ФС, нові ВМ [3,4])
+python lifecycle_sim.py --steps 20 --servers 12 --seed 1       # життєвий цикл → results_lifecycle.json
 $env:QAOA_INSTANCE="C";     python qaoa_noslack_real_qpu.py submit 2 1000   # платний запуск на Garnet
 ```
 У `compare_migration.py` точний оптимум рахується ще й повним перебором (M^N розподілів), тому скрипт
@@ -64,8 +70,15 @@ pip install dimod dwave-samplers ortools qiskit qiskit-aer scipy numpy
 - **Slack-free QAOA на IQM Garnet:** інстанс B (8 кубітів, p=2, 1000 shots) — 20.9% ± 1.3% оптимальних shots
   проти 1.6% випадково; контроль із випадковими кутами 1.9%. Інстанс C (10 кубітів) — 7.3% ± 0.8% проти 0.78%.
   Результати узгоджуються з шумною симуляцією при ефективній помилці CX ≈ 1–2%.
-- **Warm-start QAOA (точна симуляція, інстанс W):** p=2 дає ≈6% shots, кращих за x0; класичний випадковий сусід
-  на 1–2 міграції — 25–40%. На малому інстансі квантовий варіант не виграє (див. `results_migration.json`).
+- **Warm-start QAOA (точна симуляція, інстанс W):** p=2 зі звичайним RX дає ≈6% shots, кращих за x0, і тяжіє до
+  однієї дорогої міграції великої ВМ; змішувач, зважений за розміром ВМ (α=2), дає ≈12% і знаходить оптимум
+  з двома дешевими міграціями. Класичний випадковий сусід на 1–2 міграції — 25–40%: на малому інстансі
+  квантовий варіант не виграє (`results_migration.json`).
+- **Алгоритм 2 (нові ВМ):** для 2 нових ВМ на 3 ФС QAOA потребує 7 кубітів замість 18 у повній задачі;
+  p=3 дає 40% оптимальних проти 2.3% випадково (точна симуляція).
+- **Життєвий цикл (12 ФС, 20–30 кроків, класика):** перерозподіл BRKGA з MU досягає тієї ж кількості серверів,
+  що й повна переукладка (= нижня межа), з у 3.5–5× меншими міграціями і мігрованим навантаженням
+  (`results_lifecycle.json`).
 - Застереження: інстанси іграшкові (8–15 кубітів); перевага квантового методу над класикою не заявляється.
   Рамка — здійсненність на NISQ-залізі та вплив шуму.
 
