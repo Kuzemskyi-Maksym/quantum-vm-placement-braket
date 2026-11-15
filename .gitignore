@@ -4,3 +4,7 @@ __pycache__/
 venv/
 
 noslack_*
+
+warm_task_*.txt
+warm_control_task_*.txt
+warm_qpu_result_*.json

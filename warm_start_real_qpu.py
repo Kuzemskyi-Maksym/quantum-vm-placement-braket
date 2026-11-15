@@ -1,5 +1,6 @@
 """
-Warm-start QAOA (інстанс W, 15 кубітів, критерій з міграціями MU) на реальному QPU IQM Garnet (eu-north-1).
+Warm-start QAOA (інстанс W, 15 кубітів, критерій з міграціями MU) на реальному QPU через Amazon Braket.
+Пристрій: BRAKET_DEVICE=garnet (за замовч.) | emerald | forte — див. devices.py.
 Схема та сама, що в warm_start_noisy.py: X на кубітах x0 → RX(2β0·w) → [фаза → RX(2β·w)] × p.
 За шумною симуляцією (2026-11-02) при e2≈2% p=1 (91 CX) дає ≈1.2% кращих за x0 проти 0.8% для p=2 (216 CX),
 тому для заліза рекомендовано p=1 зі змішувачем за розміром ВМ.
@@ -14,17 +15,16 @@ Warm-start QAOA (інстанс W, 15 кубітів, критерій з міг
 """
 import json, sys
 import numpy as np
-import boto3
-from braket.aws import AwsDevice, AwsQuantumTask, AwsSession
+from braket.aws import AwsQuantumTask
 from braket.circuits import Circuit
 from braket.devices import LocalSimulator
 
 import warm_start_noisy as wn      # P, terms, x0_bits, w, MU, MIXER, ALPHA (читає --mu/--mixer/--alpha)
 import warm_start_qaoa as ws
+import devices
 
-DEVICE_ARN = "arn:aws:braket:eu-north-1::device/qpu/iqm/Garnet"
-REGION = "eu-north-1"
-TAG = f"mu{wn.MU:g}_{wn.MIXER}" + (f"{wn.ALPHA:g}" if wn.MIXER == "size" else "")
+DEV_KEY, DEV = devices.selected()
+TAG = f"mu{wn.MU:g}_{wn.MIXER}" + (f"{wn.ALPHA:g}" if wn.MIXER == "size" else "") + f"_{DEV_KEY}"
 n, P, w = wn.n, wn.P, wn.w
 
 
@@ -83,7 +83,7 @@ def main():
         if a.startswith("--"): skip = True; continue
         pos.append(a)
     if mode == "fetch":
-        sess = AwsSession(boto3.Session(region_name=REGION))
+        sess = devices.session(DEV)
         task = AwsQuantumTask(pos[0], aws_session=sess)
         st = task.state(); print("Статус:", st)
         if st in ("QUEUED", "CREATED"):
@@ -92,8 +92,11 @@ def main():
             return
         if st != "COMPLETED":
             print("Результату немає"); return
-        out = analyze(task.result().measurement_counts, "IQM Garnet")
-        json.dump(out, open(f"warm_qpu_result_{TAG}.json", "w"), indent=2, ensure_ascii=False)
+        out = analyze(task.result().measurement_counts, DEV["name"])
+        kind = devices.kind_of(pos[0])
+        json.dump(out, open(f"warm_qpu_result_{TAG}_{kind}.json", "w"), indent=2, ensure_ascii=False)
+        devices.log_result(pos[0], out)
+        print(f"збережено warm_qpu_result_{TAG}_{kind}.json")
         return
 
     p = int(pos[0]) if len(pos) > 0 else 1
@@ -113,14 +116,17 @@ def main():
         res = LocalSimulator().run(circ, shots=20000).result()
         analyze(res.measurement_counts, "Braket local simulator (noiseless)")
     elif mode in ("submit", "control"):
-        cost = 0.30 + shots * 0.00145
-        print(f"Відправка на Garnet: {shots} shots, орієнтовна вартість ≈ ${cost:.2f}")
-        sess = AwsSession(boto3.Session(region_name=REGION))
-        dev = AwsDevice(DEVICE_ARN, aws_session=sess)
+        sess = devices.session(DEV)
+        dev = devices.open_device(DEV, sess)
+        devices.check_ready(dev, n)
+        est = devices.confirm(DEV, shots)
         task = dev.run(circ, shots=shots)
         print("Task ID:", task.id)
         open(("warm_control_task_" if is_control else "warm_task_") + TAG + ".txt", "w").write(task.id)
-        print("Task ID збережено. Результат: python warm_start_real_qpu.py fetch <повний ARN> (з тими самими --mu/--mixer/--alpha)")
+        devices.log_submit(task.id, DEV_KEY, "warm_start_real_qpu.py", shots, est, instance="W", p=p,
+                           control=is_control, mu=wn.MU, mixer=wn.MIXER, alpha=wn.ALPHA, angles=np.round(params, 4).tolist())
+        print(f"Task ID збережено і в qpu_runs.json. Результат: BRAKET_DEVICE={DEV_KEY} python warm_start_real_qpu.py "
+              f"fetch <повний ARN> (з тими самими --mu/--mixer/--alpha)")
 
 
 if __name__ == "__main__":

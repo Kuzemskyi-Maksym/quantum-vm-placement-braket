@@ -1,5 +1,6 @@
 """
-Slack-free QAOA (інстанс B, 8 кубітів) на реальному QPU IQM Garnet (eu-north-1).
+Slack-free QAOA (інстанс B, 8 кубітів) на реальному QPU через Amazon Braket.
+Пристрій: BRAKET_DEVICE=garnet (за замовч.) | emerald | forte — див. devices.py (ARN, регіон, ціни, журнал qpu_runs.json).
 
 Інстанс обирається змінною QAOA_INSTANCE (B за замовчуванням, C = спільний 4 ВМ/2 ФС, 10 кубітів).
 
@@ -16,16 +17,15 @@ submit НЕ чекає на результат: одразу друкує Task I
 import json, sys
 import numpy as np
 from scipy.optimize import minimize
-import boto3
-from braket.aws import AwsDevice, AwsQuantumTask, AwsSession
+from braket.aws import AwsQuantumTask
 from braket.circuits import Circuit
 from braket.devices import LocalSimulator
 
 from qaoa_exact import qaoa_state
 import qaoa_noslack_noisy as nz   # будує E, Ez, terms, feasible, optimal для інстансу B
+import devices
 
-DEVICE_ARN = "arn:aws:braket:eu-north-1::device/qpu/iqm/Garnet"
-REGION = "eu-north-1"
+DEV_KEY, DEV = devices.selected()
 
 
 def best_angles(p, restarts=30, seed=0):
@@ -77,7 +77,7 @@ def analyze(counts, label):
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "local"
     if mode == "fetch":
-        sess = AwsSession(boto3.Session(region_name=REGION))
+        sess = devices.session(DEV)
         task = AwsQuantumTask(sys.argv[2], aws_session=sess)
         st = task.state(); print("Статус:", st)
         if st in ("QUEUED", "CREATED"):
@@ -86,8 +86,12 @@ def main():
             return
         if st != "COMPLETED":
             print("Результату немає"); return
-        out = analyze(task.result().measurement_counts, "IQM Garnet")
-        json.dump(out, open("noslack_qpu_result_" + nz.NAME + ".json", "w"), indent=2, ensure_ascii=False)
+        out = analyze(task.result().measurement_counts, DEV["name"])
+        kind = devices.kind_of(sys.argv[2])
+        fn = f"noslack_qpu_result_{nz.NAME}_{DEV_KEY}_{kind}.json"
+        json.dump(out, open(fn, "w"), indent=2, ensure_ascii=False)
+        devices.log_result(sys.argv[2], out)
+        print("збережено", fn)
         return
 
     p = int(sys.argv[2]) if len(sys.argv) > 2 else 2
@@ -106,14 +110,17 @@ def main():
         res = LocalSimulator().run(circ, shots=20000).result()
         analyze(res.measurement_counts, "Braket local simulator (noiseless)")
     elif mode in ("submit", "control"):
-        cost = 0.30 + shots * 0.00145
-        print(f"Відправка на Garnet: {shots} shots, орієнтовна вартість ≈ ${cost:.2f}")
-        sess = AwsSession(boto3.Session(region_name=REGION))
-        dev = AwsDevice(DEVICE_ARN, aws_session=sess)
+        sess = devices.session(DEV)
+        dev = devices.open_device(DEV, sess)
+        devices.check_ready(dev, nz.n)
+        est = devices.confirm(DEV, shots)
         task = dev.run(circ, shots=shots)
         print("Task ID:", task.id)
-        open(("noslack_control_task_" if is_control else "noslack_task_") + nz.NAME + ".txt", "w").write(task.id)
-        print("Task ID збережено у noslack_[control_]task_<інстанс>.txt. Результат: python qaoa_noslack_real_qpu.py fetch <Task ID>")
+        open(("noslack_control_task_" if is_control else "noslack_task_") + f"{nz.NAME}_{DEV_KEY}.txt", "w").write(task.id)
+        devices.log_submit(task.id, DEV_KEY, "qaoa_noslack_real_qpu.py", shots, est,
+                           instance=nz.NAME, p=p, control=is_control, angles=np.round(params, 4).tolist())
+        print(f"Task ID збережено у noslack_[control_]task_{nz.NAME}_{DEV_KEY}.txt і в qpu_runs.json. "
+              f"Результат: BRAKET_DEVICE={DEV_KEY} python qaoa_noslack_real_qpu.py fetch <повний ARN>")
 
 
 if __name__ == "__main__":
