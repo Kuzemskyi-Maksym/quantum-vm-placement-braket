@@ -18,8 +18,17 @@
 
 Запуск: python placement_new.py            (приклад: 3 ФС по 12, наявні ВМ [6,2 | 5 | —], нові [3, 4])
         python placement_new.py --new 3,4,2
+
+Залізо (2026-11-15, за зразком warm_start_real_qpu.py; пристрій BRAKET_DEVICE=garnet|emerald|forte, журнал
+qpu_runs.json через devices.py). Схема — звичайний QAOA (холодний старт) над кубітами нових ВМ, кути з qaoa_new:
+  python placement_new.py local [P] [SHOTS] [--new 3,4,2]     # безкоштовно: локальний симулятор Braket
+  python placement_new.py control_local [P]                    # безкоштовно: випадкові кути
+  python placement_new.py submit [P] [SHOTS] [--new 3,4,2]     # ПЛАТНО (за замовч. P=2, 1000 shots)
+  python placement_new.py control [P] [SHOTS]                  # ПЛАТНО: та сама схема, ВИПАДКОВІ кути (700 shots)
+  python placement_new.py fetch <task-arn> [--new 3,4,2]       # безкоштовно: забрати результат
+Аналіз: P(оптимум), P(допустимі), baseline, найкращий стан, std.err. Приклад за замовч. — 7 кубітів, --new 3,4,2 — 10.
 """
-import itertools, sys, time
+import itertools, json, sys, time
 import numpy as np
 from scipy.optimize import minimize
 from qaoa_exact import qaoa_state
@@ -170,24 +179,173 @@ def main(caps, existing, new):
     kbf, abf = brute_force(new, res, active)
     print(f"перебір:  нових серверів = {kbf}, розміщення {abf}")
     a = best_fit_decreasing(new, res, active)
+    out = dict(caps=caps, existing=existing, new=new, residual=res, active=active,
+               brute_force=dict(new_servers=kbf, assignment=abf),
+               best_fit_decreasing=dict(new_servers=new_servers(a, active), assignment=a))
     print(f"Best Fit Decreasing: нових серверів = {new_servers(a, active)}, розміщення {a}")
     try:
         a, st = cp_sat(new, res, active)
+        out["CP-SAT"] = dict(new_servers=new_servers(a, active), status=st, assignment=a)
         print(f"CP-SAT:   нових серверів = {new_servers(a, active)} ({st}), розміщення {a}")
     except ImportError:
         print("CP-SAT:   OR-Tools не встановлено, пропущено")
     t = time.time()
     q = qaoa_new(new, res, active)
+    out["QAOA"] = q
     print(f"QAOA лише над новими ВМ: кубітів = {q['n_qubits']} (повна задача мала б "
           f"{(sum(len(v) for v in existing) + len(new)) * len(caps) + len(caps)}), оптимум = {q['optimum_new_servers']} новий сервер; "
           f"baseline допустимі {q['baseline_feasible']:.3f}, оптимальні {q['baseline_optimal']:.3f}")
     for p, r in q["by_p"].items():
         print(f"  p={p}: P(допустимі)={r['P_feasible']:.3f}  P(оптимум)={r['P_optimal']:.3f}")
     print(f"  [{time.time() - t:.0f} с]")
+    from config import save_results
+    print("Збережено", save_results("placement_new", out, instance=dict(name="placement_new", caps=caps,
+                                                                         existing=existing, new=new)))
+
+
+# ---------- залізо: схема QAOA над новими ВМ (Braket) ----------
+def ising_terms(Ez, n):
+    """Розклад Ez на Z_k і Z_k Z_l (точний: H квадратичний). Z-рядки ортогональні → коефіцієнт = <Ez, Z>/2^n."""
+    S = np.arange(2 ** n)
+    Zs = 1 - 2 * ((S[:, None] >> (n - 1 - np.arange(n))[None, :]) & 1)       # кубіт 0 = старший біт
+    terms, rec = [], np.full(2 ** n, Ez.mean())
+    for k in range(n):
+        c = float(Ez @ Zs[:, k]) / 2 ** n
+        if abs(c) > 1e-12: terms.append(((k,), c)); rec += c * Zs[:, k]
+    for k, l in itertools.combinations(range(n), 2):
+        c = float(Ez @ (Zs[:, k] * Zs[:, l])) / 2 ** n
+        if abs(c) > 1e-12: terms.append(((k, l), c)); rec += c * Zs[:, k] * Zs[:, l]
+    assert np.allclose(rec, Ez, atol=1e-9), "H не квадратичний?"
+    return terms
+
+
+def braket_circuit(params, terms, n):
+    from braket.circuits import Circuit
+    p = len(params) // 2
+    betas, gammas = params[:p], params[p:]
+    c = Circuit()
+    for q in range(n):
+        c.h(q)
+    for l in range(p):
+        for lab, coef in terms:
+            if len(lab) == 1:
+                c.rz(lab[0], 2 * gammas[l] * coef)
+            else:
+                a, b = lab
+                c.cnot(a, b); c.rz(b, 2 * gammas[l] * coef); c.cnot(a, b)
+        for q in range(n):
+            c.rx(q, 2 * betas[l])
+    return c
+
+
+def analyze_counts(counts, prob, label):
+    """Braket-counts: рядок НЕ перевертаємо (кубіт 0 = перший символ = старший біт індексу)."""
+    n, onehot, feasible, optimal, assign, nsrv = (prob[k] for k in ("n", "onehot", "feasible", "optimal", "assign", "nsrv"))
+    shots = sum(counts.values())
+    pr = np.zeros(2 ** n)
+    for bs, c in counts.items():
+        pr[int(bs, 2)] += c
+    pr = pr / shots
+    po = float(pr[optimal].sum())
+    seen = feasible & (pr > 0)
+    best = None
+    if seen.any():
+        i = np.flatnonzero(seen)[np.argmin(nsrv[seen])]
+        best = dict(assignment=assign[i].tolist(), new_servers=int(nsrv[i]), count=int(round(pr[i] * shots)))
+    out = dict(label=label, shots=shots, n_qubits=n, P_optimal=po, std_err_optimal=float(np.sqrt(po * (1 - po) / shots)),
+               P_feasible=float(pr[feasible].sum()), P_onehot=float(pr[onehot].sum()),
+               baseline_optimal=float(optimal.mean()), baseline_feasible=float(feasible.mean()), best_seen=best)
+    print(json.dumps(out, indent=2, ensure_ascii=False))
+    return out
+
+
+def hw_problem(new, caps=EXAMPLE["caps"], existing=EXAMPLE["existing"]):
+    res, active = residual(caps, existing)
+    n, E, onehot, feasible, optimal, best = build_new(new, res, active)
+    Ez = (E - E.min()) / (E.max() - E.min())
+    k, m = len(new), len(res)
+    S = np.arange(2 ** n)
+    X = (S[:, None] >> (n - 1 - np.arange(n))[None, :]) & 1
+    assign = X[:, :k * m].reshape(-1, k, m).argmax(2)
+    nsrv = np.array([new_servers(a, active) for a in assign])
+    return dict(n=n, Ez=Ez, onehot=onehot, feasible=feasible, optimal=optimal, best=best, assign=assign, nsrv=nsrv,
+                res=res, active=active, terms=ising_terms(Ez, n))
+
+
+def hw_main(argv):
+    import devices
+    mode = argv[1]
+    pos, skip = [], False                      # позиційні аргументи без значень прапорців --key value
+    for a in argv[2:]:
+        if skip: skip = False; continue
+        if a.startswith("--"): skip = True; continue
+        pos.append(a)
+    new = [float(v) for v in argv[argv.index("--new") + 1].split(",")] if "--new" in argv else EXAMPLE["new"]
+    tag = "new" + "-".join(f"{v:g}" for v in new)
+    dev_key, dev = devices.selected()
+    prob = hw_problem(new)
+    n = prob["n"]
+    if mode == "fetch":
+        from braket.aws import AwsQuantumTask
+        task = AwsQuantumTask(pos[0], aws_session=devices.session(dev))
+        st = task.state(); print("Статус:", st)
+        if st in ("QUEUED", "CREATED"):
+            try: print("Позиція в черзі:", task.queue_position().queue_position)
+            except Exception as e: print("позиція недоступна:", e)
+            return
+        if st != "COMPLETED":
+            print("Результату немає"); return
+        out = analyze_counts(task.result().measurement_counts, prob, dev["name"])
+        kind = devices.kind_of(pos[0])
+        fn = f"newvm_qpu_result_{tag}_{dev_key}_{kind}.json"
+        json.dump(out, open(fn, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
+        devices.log_result(pos[0], out)
+        print("збережено", fn)
+        return
+
+    p = int(pos[0]) if pos else 2
+    is_control = mode in ("control", "control_local")
+    shots = int(pos[1]) if len(pos) > 1 else (700 if is_control else 1000)
+    if is_control:
+        rng = np.random.default_rng(123)            # фіксований seed → відтворюваний контроль
+        params = np.concatenate([rng.uniform(0, np.pi / 2, p), rng.uniform(0, 2 * np.pi, p)])
+    else:
+        params = np.array(qaoa_new(new, prob["res"], prob["active"], ps=(p,))["by_p"][p]["angles"])
+    circ = braket_circuit(params, prob["terms"], n)
+    ideal = np.abs(qaoa_state(prob["Ez"], params, n)) ** 2
+    n2q = sum(len(l) == 2 for l, _ in prob["terms"]) * 2 * p
+    print(f"нові ВМ {new}: кубітів {n}, p={p}, CNOT={n2q}; ідеальні P(оптимум)={ideal[prob['optimal']].sum():.4f}, "
+          f"P(допустимі)={ideal[prob['feasible']].sum():.4f}; baseline оптимум {prob['optimal'].mean():.4f}; "
+          f"кути {np.round(params, 3).tolist()}")
+    if mode in ("local", "control_local"):
+        from braket.devices import LocalSimulator
+        out = analyze_counts(LocalSimulator().run(circ, shots=20000).result().measurement_counts, prob,
+                             "Braket local simulator (noiseless)")
+        if not is_control:                           # тест конвенції бітів: локальний симулятор = точний numpy
+            po = ideal[prob["optimal"]].sum()
+            assert abs(out["P_optimal"] - po) < 4 * np.sqrt(po * (1 - po) / 20000) + 1e-3, "конвенція бітів?"
+            print(f"конвенція ок: локальний симулятор {out['P_optimal']:.4f} vs numpy {po:.4f}")
+    elif mode in ("submit", "control"):
+        sess = devices.session(dev)
+        device = devices.open_device(dev, sess)
+        devices.check_ready(device, n)
+        est = devices.confirm(dev, shots)
+        task = device.run(circ, shots=shots)
+        print("Task ID:", task.id)
+        open(("newvm_control_task_" if is_control else "newvm_task_") + f"{tag}_{dev_key}.txt", "w").write(task.id)
+        devices.log_submit(task.id, dev_key, "placement_new.py", shots, est, instance=tag, new=new, p=p,
+                           control=is_control, angles=np.round(params, 4).tolist())
+        print(f"Task ID збережено і в qpu_runs.json. Результат: BRAKET_DEVICE={dev_key} python placement_new.py "
+              f"fetch <повний ARN> --new {','.join(f'{v:g}' for v in new)}")
+    else:
+        sys.exit(f"невідомий режим {mode}")
 
 
 if __name__ == "__main__":
-    ex = dict(EXAMPLE)
-    if "--new" in sys.argv:
-        ex["new"] = [float(v) for v in sys.argv[sys.argv.index("--new") + 1].split(",")]
-    main(**ex)
+    if len(sys.argv) > 1 and sys.argv[1] in ("local", "control_local", "submit", "control", "fetch"):
+        hw_main(sys.argv)
+    else:
+        ex = dict(EXAMPLE)
+        if "--new" in sys.argv:
+            ex["new"] = [float(v) for v in sys.argv[sys.argv.index("--new") + 1].split(",")]
+        main(**ex)

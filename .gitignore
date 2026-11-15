@@ -8,3 +8,7 @@ noslack_*
 warm_task_*.txt
 warm_control_task_*.txt
 warm_qpu_result_*.json
+
+newvm_task_*.txt
+newvm_control_task_*.txt
+newvm_qpu_result_*.json
