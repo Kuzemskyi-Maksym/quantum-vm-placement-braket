@@ -91,12 +91,19 @@ def warm_state(Ez, params, n, idx0, w=None):
     return psi
 
 
-def problem(mu):
-    """Інстанс W з членом міграцій. Повертає все потрібне для оцінки станів."""
-    n, E, onehot, feasible, optimal, best = build(LOADS, CAPS)
-    X, assign, active = decode_states(n)
-    x0 = np.array(X0_ASSIGN)
-    idx0 = basis_index(X0_ASSIGN, n)
+_BUILD_CACHE = {}
+
+
+def problem(mu, x0_assign=None):
+    """Інстанс (config) з членом міграцій. Повертає все потрібне для оцінки станів.
+    x0_assign — інший поточний розподіл (compare_migration --random); None → X0 з config."""
+    x0_assign = X0_ASSIGN if x0_assign is None else list(x0_assign)
+    if "b" not in _BUILD_CACHE:                     # build/decode не залежать від x0 і mu — кешуємо
+        n_ = N * M + M
+        _BUILD_CACHE["b"] = build(LOADS, CAPS), decode_states(n_)
+    (n, E, onehot, feasible, optimal, best), (X, assign, active) = _BUILD_CACHE["b"]
+    x0 = np.array(x0_assign)
+    idx0 = basis_index(x0_assign, n)
     moved = assign != x0[None, :]
     mig = moved.sum(1)                                                     # кількість міграцій
     migc = (moved * np.array(LOADS, dtype=float)[None, :]).sum(1) / TOTAL_LOAD   # зважена вартість ∈ [0,1]
@@ -136,15 +143,21 @@ GMAX = 20 * np.pi   # межа для γ: енергія нормована в [
                     # і корисні γ — десятки; межа 2π (стара) відсікала їх (γ упиралось у 6.28)
 
 
-def optimize_warm(P, p, bmax, restarts, rng, target="pbetter", w=None):
+def optimize_warm(P, p, bmax, restarts, rng, target="pbetter", w=None, fast=False):
     """Підбір кутів теплого старту. target: 'pbetter' — максимум P(кращий за x0); 'energy' — мінімум <E>.
-    w — ваги змішувача (size_weights) або None."""
+    w — ваги змішувача (size_weights) або None. fast=True — numba-ядро qaoa_fast.warm_state (той самий стан)."""
     n, Ez, idx0 = P["n"], P["Ez"], P["idx0"]
     bounds = [(0, bmax)] + [(0, GMAX)] * p + [(0, bmax)] * p
-    if target == "pbetter":
-        f = lambda x: -float((np.abs(warm_state(Ez, x, n, idx0, w)) ** 2)[P["better"]].sum())
+    if fast:
+        import qaoa_fast as qf
+        Ezc = np.ascontiguousarray(Ez)
+        state = lambda x: qf.warm_state(Ezc, x, n, idx0, w)
     else:
-        f = lambda x: float((np.abs(warm_state(Ez, x, n, idx0, w)) ** 2) @ Ez)
+        state = lambda x: warm_state(Ez, x, n, idx0, w)
+    if target == "pbetter":
+        f = lambda x: -float((np.abs(state(x)) ** 2)[P["better"]].sum())
+    else:
+        f = lambda x: float((np.abs(state(x)) ** 2) @ Ez)
     best = None
     for _ in range(restarts):
         x = np.concatenate([[rng.uniform(0, bmax)], rng.uniform(0, GMAX, p), rng.uniform(0, bmax, p)])
@@ -154,14 +167,15 @@ def optimize_warm(P, p, bmax, restarts, rng, target="pbetter", w=None):
     return best
 
 
-def run_warm(mu=MU, p=2, restarts=25, seed=1, bmax=np.pi, shots=1000, mixer="rx", alpha=1.0):
+def run_warm(mu=MU, p=2, restarts=25, seed=1, bmax=np.pi, shots=1000, mixer="rx", alpha=1.0, x0=None, fast=False):
     """Для порівняльної таблиці: теплий старт з ціллю P(кращий за x0) при заданому mu.
-    mixer: 'rx' — звичайний RX на всіх кубітах; 'size' — кути, зважені за розміром ВМ (size_weights(alpha))."""
-    P = problem(mu)
+    mixer: 'rx' — звичайний RX на всіх кубітах; 'size' — кути, зважені за розміром ВМ (size_weights(alpha)).
+    x0 — інший поточний розподіл (None → config.X0); fast — numba-ядро."""
+    P = problem(mu, x0)
     w = size_weights(alpha) if mixer == "size" else None
     rng = np.random.default_rng(seed)
     t = time.time()
-    r = optimize_warm(P, p, bmax, restarts, rng, w=w)
+    r = optimize_warm(P, p, bmax, restarts, rng, w=w, fast=fast)
     pr = np.abs(warm_state(P["Ez"], r.x, P["n"], P["idx0"], w)) ** 2
     bt = P["better"]
     return dict(mu=mu, p=p, mixer=mixer, F0=float(P["F0"]), p_better=float(pr[bt].sum()),
@@ -170,11 +184,11 @@ def run_warm(mu=MU, p=2, restarts=25, seed=1, bmax=np.pi, shots=1000, mixer="rx"
                 best_seen=best_seen(pr, P, shots), angles=r.x.tolist(), runtime_s=time.time() - t)
 
 
-def random_neighbor(mu, d):
+def random_neighbor(mu, d, x0=None):
     """Класичний контроль: рівноімовірний допустимий розподіл на відстані d міграцій від x0."""
-    P = problem(mu)
+    P = problem(mu, x0)
     sel = P["onehot"] & P["feasible"] & (P["mig"] == d)
-    pr = np.zeros(2 ** P["n"]); pr[sel] = 1 / sel.sum()
+    pr = np.zeros(2 ** P["n"]); pr[sel] = 1 / max(sel.sum(), 1)
     bt = P["better"]
     return dict(mu=mu, d=d, p_better=float(pr[bt].sum()),
                 mean_migc_better=float((pr[bt] * P["migc"][bt]).sum() / max(pr[bt].sum(), 1e-12)))
