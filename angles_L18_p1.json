@@ -1,0 +1,14 @@
+{
+  "instance": "L18",
+  "p": 1,
+  "angles": [
+    2.691893934580516,
+    15.967403327933443
+  ],
+  "mean_energy_norm": 0.07277400899423571,
+  "restarts": 30,
+  "seed": 0,
+  "source": "точна оптимізація <Ez> (qaoa_fast, L-BFGS-B)",
+  "runtime_s": 14.7,
+  "generated": "2026-11-15"
+}

@@ -1,0 +1,14 @@
+{
+  "instance": "C",
+  "p": 1,
+  "angles": [
+    -9.855452111989376,
+    8.729623560544177
+  ],
+  "mean_energy_norm": 0.1233519816778758,
+  "restarts": 30,
+  "seed": 0,
+  "source": "точна оптимізація <Ez> (qaoa_fast, L-BFGS-B)",
+  "runtime_s": 0.9,
+  "generated": "2026-11-15"
+}
