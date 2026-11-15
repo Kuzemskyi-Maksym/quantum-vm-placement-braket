@@ -104,6 +104,32 @@ def objective(assignment, x0=X0, mu=MU):
     return active_pms(assignment) + mu * migration_cost(assignment, x0)
 
 
+def git_hash():
+    """Короткий hash поточного коміту (None, якщо git недоступний)."""
+    try:
+        import subprocess
+        return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], text=True,
+                                       stderr=subprocess.DEVNULL, cwd=os.path.dirname(os.path.abspath(__file__))).strip()
+    except Exception:
+        return None
+
+
+def save_results(name, payload, instance=None):
+    """Єдиний формат results_*.json: верхній рівень {"instance", "generated" (ISO), "git" (короткий hash), …payload}.
+    name — 'results_x.json' або 'x' (тоді results_x.json). instance — опис інстансу (за замовч. з payload або config)."""
+    import json, datetime
+    fn = name if name.endswith(".json") else f"results_{name}.json"
+    payload = dict(payload)
+    inst = payload.pop("instance", None) if instance is None else instance
+    if inst is None:
+        inst = dict(name=_name, vm_loads=VM_LOADS, pm_capacity=PM_CAPACITY, T=T)
+    out = {"instance": inst, "generated": datetime.datetime.now().isoformat(timespec="seconds"), "git": git_hash()}
+    out.update(payload)
+    with open(fn, "w", encoding="utf-8") as f:
+        json.dump(out, f, indent=2, ensure_ascii=False, default=str)
+    return fn
+
+
 if __name__ == "__main__":
     print(f"N (ВМ) = {N}, M (ФС) = {M}")
     print(f"VM_LOADS = {VM_LOADS}")

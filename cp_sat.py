@@ -68,6 +68,42 @@ def run_cp_sat(time_limit_s=30.0, x0=X0, mu=MU):
     }
 
 
+def solve_cpsat(loads, caps, x0=None, mu=0.0, time_limit=10.0, t=T, workers=8):
+    """Та сама модель, що й run_cp_sat, але для довільного інстансу (lifecycle_sim.py, алгоритм 1 як еталон):
+    loads — навантаження ВМ, caps — номінальні місткості (поріг t застосовується тут), x0 — поточний розподіл
+    (None або mu=0 → лише кількість ФС). Повертає assignment, status, objective (ФС + mu·зважені міграції)."""
+    start = time.perf_counter()
+    n, m = len(loads), len(caps)
+    total = float(sum(loads)) or 1.0
+    model = cp_model.CpModel()
+    x = {(j, i): model.NewBoolVar(f"x_{j}_{i}") for j in range(n) for i in range(m)}
+    y = {i: model.NewBoolVar(f"y_{i}") for i in range(m)}
+    for j in range(n):
+        model.Add(sum(x[j, i] for i in range(m)) == 1)
+    scale = 100
+    for i in range(m):
+        model.Add(sum(int(round(loads[j] * scale)) * x[j, i] for j in range(n)) <= int(round(t * caps[i] * scale)) * y[i])
+    obj = SCALE * sum(y.values())
+    use_mig = x0 is not None and mu > 0
+    if use_mig:
+        obj = obj + sum(int(round(mu * SCALE * loads[j] / total)) * (1 - x[j, x0[j]]) for j in range(n))
+        for j in range(n):                                   # підказка: поточний розподіл
+            for i in range(m):
+                model.AddHint(x[j, i], int(x0[j] == i))
+    model.Minimize(obj)
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = time_limit
+    solver.parameters.num_workers = workers
+    status = solver.Solve(model)
+    if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        return dict(assignment=None, status=solver.StatusName(status), objective=None,
+                    runtime_s=time.perf_counter() - start)
+    a = [next(i for i in range(m) if solver.Value(x[j, i])) for j in range(n)]
+    migc = sum(loads[j] for j in range(n) if a[j] != x0[j]) / total if use_mig else 0.0
+    return dict(assignment=a, status=solver.StatusName(status), active_pms=len(set(a)),
+                objective=len(set(a)) + (mu * migc if use_mig else 0.0), runtime_s=time.perf_counter() - start)
+
+
 if __name__ == "__main__":
     result = run_cp_sat()
     print(result)
