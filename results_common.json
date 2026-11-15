@@ -12,24 +12,26 @@
     ],
     "T": 0.9
   },
+  "generated": "2026-11-15T18:38:40",
+  "git": "ffaceb6",
   "CP-SAT": {
     "active_pms": 2,
     "optimal_proved": "OPTIMAL",
-    "runtime_s": 0.011114799999631941
+    "runtime_s": 0.06915730005130172
   },
   "MBFD": {
     "active_pms": 2,
     "feasible": true,
-    "runtime_s": 1.6899999536690302e-05
+    "runtime_s": 0.001875300018582493
   },
   "BRKGA": {
     "optimum_rate": 1.0,
-    "median_runtime_s": 0.02609359999996741,
+    "median_runtime_s": 0.11178375000599772,
     "best_active_pms": 2
   },
   "Annealing": {
     "optimum_rate": 1.0,
-    "median_runtime_s": 1.3472171499997785,
+    "median_runtime_s": 3.0766474500123877,
     "best_active_pms": 2
   },
   "QAOA": {

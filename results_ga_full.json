@@ -1,0 +1,43 @@
+{
+  "instance": {
+    "name": "full",
+    "vm_loads": [
+      3,
+      4,
+      2,
+      5,
+      3,
+      4
+    ],
+    "pm_capacity": [
+      12,
+      12,
+      12
+    ],
+    "T": 0.9
+  },
+  "generated": "2026-11-15T18:38:47",
+  "git": "ffaceb6",
+  "CP-SAT": {
+    "active_pms": 3,
+    "status": "OPTIMAL",
+    "runtime_s": 0.02381370001239702
+  },
+  "MBFD": {
+    "active_pms": 3
+  },
+  "GA": {
+    "best": 3,
+    "mean": 3,
+    "optimum_runs": 20,
+    "runs": 20,
+    "median_runtime_s": 0.15175075002480298
+  },
+  "BRKGA": {
+    "best": 3,
+    "mean": 3,
+    "optimum_runs": 20,
+    "runs": 20,
+    "median_runtime_s": 0.09694555000169203
+  }
+}

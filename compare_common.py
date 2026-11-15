@@ -37,7 +37,8 @@ def main():
     assert best == opt, f"QAOA-інстанс дає оптимум {best}, CP-SAT {opt}"
     out["QAOA"] = {"n_qubits": n, "baseline_optimal": float(optm.mean())}
     print(json.dumps(out, indent=2, ensure_ascii=False, default=str))
-    json.dump(out, open("results_common.json", "w"), indent=2, ensure_ascii=False, default=str)
+    from config import save_results
+    save_results("common", out)
 
 if __name__ == "__main__":
     main()
