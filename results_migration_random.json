@@ -1,0 +1,3507 @@
+{
+  "instance": [
+    "W"
+  ],
+  "generated": "2026-11-17T16:48:48",
+  "git": "1a40614",
+  "runs": {
+    "W": {
+      "instance": {
+        "vm_loads": [
+          6,
+          5,
+          2,
+          1
+        ],
+        "pm_capacity": [
+          12,
+          12,
+          12
+        ],
+        "T": 0.9
+      },
+      "seed": 1,
+      "mus": [
+        0.5,
+        1.0,
+        2.0
+      ],
+      "brkga_runs": 20,
+      "shots_best_seen": 1000,
+      "qaoa_restarts": 25,
+      "per_x0": [
+        {
+          "x0": [
+            0,
+            1,
+            2,
+            2
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                0,
+                1,
+                0,
+                0
+              ],
+              "objective": 2.1071
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.4,
+                "mean_migc_better": 0.4428571428571429
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.04591237314459292,
+                "p_feasible": 0.08653560473394017,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.107142857142857,
+                  "prob": 0.011987468916222559
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.0704369051040965,
+                  51.76022657264996,
+                  2.4533709603364793
+                ],
+                "runtime_s": 42.3
+              },
+              "p=2, size a=2": {
+                "p_better": 0.1158405413420815,
+                "p_feasible": 0.1702529437996759,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.107142857142857,
+                  "prob": 0.02328699879743856
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0782639671851766,
+                  22.396776430941298,
+                  38.26346373890003,
+                  2.7102327022648893,
+                  0.686053301558893
+                ],
+                "runtime_s": 190.8
+              },
+              "p=2, rx": {
+                "p_better": 0.06366025350740476,
+                "p_feasible": 0.13923463683956208,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.1785714285714284,
+                  "prob": 0.014609984425022189
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.7843776590571707,
+                  43.351336103559696,
+                  39.350149226533205,
+                  2.61090225924174,
+                  2.7947846886420953
+                ],
+                "runtime_s": 118.0
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                0,
+                1,
+                0,
+                0
+              ],
+              "objective": 2.2143
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.39999999999999997,
+                "mean_migc_better": 0.44285714285714284
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.0458565363423302,
+                "p_feasible": 0.0866844362051561,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.2142857142857144,
+                  "prob": 0.011954993504267706
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.070280891596103,
+                  51.76021633433398,
+                  2.454260772297733
+                ],
+                "runtime_s": 23.2
+              },
+              "p=2, size a=2": {
+                "p_better": 0.11636376757821804,
+                "p_feasible": 0.17084723632166135,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.2142857142857144,
+                  "prob": 0.02336631052540534
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.078006030356663,
+                  22.428823689794648,
+                  38.17336640787233,
+                  2.7111655281971374,
+                  0.6857726468512925
+                ],
+                "runtime_s": 134.2
+              },
+              "p=2, rx": {
+                "p_better": 0.06558006847698769,
+                "p_feasible": 0.14852043865131168,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.357142857142857,
+                  "prob": 0.01568244795536477
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.783567822200266,
+                  43.59295624092082,
+                  39.45677870406221,
+                  2.6174626296897627,
+                  2.80045274409998
+                ],
+                "runtime_s": 75.2
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                0,
+                1,
+                0,
+                0
+              ],
+              "objective": 2.4286
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.2,
+                "mean_migc_better": 0.2571428571428571
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.045662769519825064,
+                "p_feasible": 0.08694020963430234,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.4285714285714284,
+                  "prob": 0.01186882074690831
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.07006384053684,
+                  51.756076756460736,
+                  2.4559046510473226
+                ],
+                "runtime_s": 45.0
+              },
+              "p=2, size a=2": {
+                "p_better": 0.11736217434416155,
+                "p_feasible": 0.1718935490346548,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.4285714285714284,
+                  "prob": 0.02351378582421334
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0778308503578298,
+                  22.48416945921364,
+                  38.00490843326364,
+                  2.7130486283103177,
+                  0.6851428414245624
+                ],
+                "runtime_s": 103.4
+              },
+              "p=2, rx": {
+                "p_better": 0.04437278463306456,
+                "p_feasible": 0.19892975511595415,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.7142857142857144,
+                  "prob": 0.019215998199456675
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.7960689326217514,
+                  45.837071843350266,
+                  40.31688516757316,
+                  2.676839628858093,
+                  2.8197666586860946
+                ],
+                "runtime_s": 70.3
+              }
+            }
+          },
+          "runtime_s": 810.8
+        },
+        {
+          "x0": [
+            1,
+            2,
+            1,
+            0
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "objective": 2.0357
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.16666666666666666
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4693877551020408
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.13168470222417045,
+                "p_feasible": 0.1497741545443346,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    1,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0357142857142856,
+                  "prob": 0.0759756285278515
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.049227877280933,
+                  49.39696848679604,
+                  0.7251025357122787
+                ],
+                "runtime_s": 31.4
+              },
+              "p=2, size a=2": {
+                "p_better": 0.2686713632099526,
+                "p_feasible": 0.32439671657202895,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    1,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0357142857142856,
+                  "prob": 0.12432982138793941
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  0.5208534107764726,
+                  48.34285193864446,
+                  43.803854938654865,
+                  0.7897390761223975,
+                  0.5406791148951053
+                ],
+                "runtime_s": 110.1
+              },
+              "p=2, rx": {
+                "p_better": 0.05138204145043655,
+                "p_feasible": 0.18103238493376572,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    1,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0357142857142856,
+                  "prob": 0.008529874956637833
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8067263383415932,
+                  47.68649448825485,
+                  45.442440502547896,
+                  2.624422004002292,
+                  2.819263302170969
+                ],
+                "runtime_s": 52.8
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "objective": 2.0714
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.16666666666666666
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4693877551020408
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.13167044751417553,
+                "p_feasible": 0.14989592745660793,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    1,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.07600194407331293
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0490752468548221,
+                  49.4559014615761,
+                  0.7246246369430521
+                ],
+                "runtime_s": 10.7
+              },
+              "p=2, size a=2": {
+                "p_better": 0.27002933489950376,
+                "p_feasible": 0.326658172146811,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    1,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.12427066082999189
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  0.5242284030940609,
+                  48.397687273995786,
+                  43.726923189562235,
+                  0.7896099308042781,
+                  0.539054628012993
+                ],
+                "runtime_s": 39.0
+              },
+              "p=2, rx": {
+                "p_better": 0.053833737583185236,
+                "p_feasible": 0.19218937459976213,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    1,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.009381660506622978
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8051499959561292,
+                  47.74059412951795,
+                  45.718815009342926,
+                  2.6286498151151796,
+                  2.82402395097293
+                ],
+                "runtime_s": 33.0
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "objective": 2.1429
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.16666666666666666
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.13636363636363635,
+                "mean_migc_better": 0.28571428571428575
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.1316681254606504,
+                "p_feasible": 0.15017591428428886,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    1,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.142857142857143,
+                  "prob": 0.07608360924437052
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0488203101526419,
+                  49.574361493245334,
+                  0.7236207991959126
+                ],
+                "runtime_s": 10.9
+              },
+              "p=2, size a=2": {
+                "p_better": 0.2726274632011937,
+                "p_feasible": 0.3310177774209911,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    1,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.142857142857143,
+                  "prob": 0.12408975356009462
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  0.5310598703507334,
+                  48.49583934502888,
+                  43.550322744665074,
+                  0.7896381516256735,
+                  0.535658955760872
+                ],
+                "runtime_s": 30.1
+              },
+              "p=2, rx": {
+                "p_better": 0.04676371183653946,
+                "p_feasible": 0.2492114621065865,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    1,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.142857142857143,
+                  "prob": 0.012165304619211016
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.818098612359498,
+                  50.17367449327982,
+                  47.99397958401581,
+                  2.6554423826460476,
+                  2.8399223588066764
+                ],
+                "runtime_s": 35.2
+              }
+            }
+          },
+          "runtime_s": 359.0
+        },
+        {
+          "x0": [
+            2,
+            1,
+            0,
+            2
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                2,
+                1,
+                1,
+                2
+              ],
+              "objective": 2.0714
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.21428571428571427
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4489795918367347
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03232570062005041,
+                "p_feasible": 0.17709057033280579,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.015728005716677228
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.9163727841749492,
+                  22.372416156143654,
+                  1.8644049148368744
+                ],
+                "runtime_s": 8.7
+              },
+              "p=2, size a=2": {
+                "p_better": 0.13214162074624589,
+                "p_feasible": 0.22201015464316062,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.053640489751587285
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.7848974343752944,
+                  29.26630268962549,
+                  35.09240368577415,
+                  2.824391649124773,
+                  2.7108068441826254
+                ],
+                "runtime_s": 32.3
+              },
+              "p=2, rx": {
+                "p_better": 0.05134676944304483,
+                "p_feasible": 0.1807238995856829,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.006270012143333849
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8064981649605905,
+                  47.647959974450465,
+                  45.41623987152781,
+                  2.6242903408161986,
+                  2.819113436549046
+                ],
+                "runtime_s": 41.3
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                2,
+                1,
+                1,
+                2
+              ],
+              "objective": 2.1429
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.21428571428571427
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.44897959183673475
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.0324579394357988,
+                "p_feasible": 0.17825747904125264,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.01578982295897715
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.9175616626365801,
+                  22.506785342707854,
+                  1.865815256377613
+                ],
+                "runtime_s": 8.8
+              },
+              "p=2, size a=2": {
+                "p_better": 0.1343198884318067,
+                "p_feasible": 0.22622374613238388,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.05469928130718679
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.7852914026253064,
+                  29.647109316226683,
+                  35.04140914485342,
+                  2.8230915921923594,
+                  2.714313270405604
+                ],
+                "runtime_s": 34.9
+              },
+              "p=2, rx": {
+                "p_better": 0.05375811953143072,
+                "p_feasible": 0.19165588247586243,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.0067885033681641125
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.804712292737211,
+                  47.67061785886014,
+                  45.67164595727708,
+                  2.6284807253148794,
+                  2.8237846521939414
+                ],
+                "runtime_s": 33.1
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                2,
+                1,
+                1,
+                2
+              ],
+              "objective": 2.2857
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.21428571428571427
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.13636363636363635,
+                "mean_migc_better": 0.28571428571428575
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.032714739021126114,
+                "p_feasible": 0.18062207815859088,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.01591245462602233
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.9200081350945606,
+                  22.77741559852651,
+                  1.8686706441251384
+                ],
+                "runtime_s": 8.0
+              },
+              "p=2, size a=2": {
+                "p_better": 0.1385995767517281,
+                "p_feasible": 0.23429842721000146,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.05685194810164001
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.785642903006,
+                  30.39381006108453,
+                  34.897161389721056,
+                  2.820302021300325,
+                  2.7208907652725367
+                ],
+                "runtime_s": 33.4
+              },
+              "p=2, rx": {
+                "p_better": 0.04733395691689595,
+                "p_feasible": 0.24426694432214557,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.008640684578129842
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8170353140059023,
+                  49.474521407064785,
+                  47.669725943668155,
+                  2.6543891190479845,
+                  2.839555867531332
+                ],
+                "runtime_s": 33.0
+              }
+            }
+          },
+          "runtime_s": 238.8
+        },
+        {
+          "x0": [
+            2,
+            1,
+            0,
+            0
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                2,
+                1,
+                1,
+                1
+              ],
+              "objective": 2.1071
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.4,
+                "mean_migc_better": 0.4428571428571429
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.0459123731445858,
+                "p_feasible": 0.08653560586355598,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.107142857142857,
+                  "prob": 0.011993637354955851
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.0704368671830577,
+                  51.76022108908758,
+                  2.4533709201409395
+                ],
+                "runtime_s": 3.8
+              },
+              "p=2, size a=2": {
+                "p_better": 0.11584054132515728,
+                "p_feasible": 0.1702535893907817,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.107142857142857,
+                  "prob": 0.023340491470969508
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0782661561410796,
+                  22.396709148063074,
+                  38.26367424087906,
+                  2.710226857047856,
+                  0.6860549637590202
+                ],
+                "runtime_s": 20.5
+              },
+              "p=2, rx": {
+                "p_better": 0.06366025350881094,
+                "p_feasible": 0.13923471010680907,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    0,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.1785714285714284,
+                  "prob": 0.014609984316807422
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.7843778066915483,
+                  43.351338313350524,
+                  39.35016603314165,
+                  2.6109022330599148,
+                  2.7947847083426476
+                ],
+                "runtime_s": 13.7
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                2,
+                1,
+                1,
+                1
+              ],
+              "objective": 2.2143
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.39999999999999997,
+                "mean_migc_better": 0.44285714285714284
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.045856536341153865,
+                "p_feasible": 0.0866845885891472,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.2142857142857144,
+                  "prob": 0.011958847128507396
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.07028153760279,
+                  51.76016981310376,
+                  2.4542597938000545
+                ],
+                "runtime_s": 5.9
+              },
+              "p=2, size a=2": {
+                "p_better": 0.11636376758636341,
+                "p_feasible": 0.170847727984344,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.2142857142857144,
+                  "prob": 0.02341557492077069
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0780026184200413,
+                  22.428827102314784,
+                  38.17330636717494,
+                  2.7111667620935496,
+                  0.6857718767027017
+                ],
+                "runtime_s": 14.0
+              },
+              "p=2, rx": {
+                "p_better": 0.06558006847607946,
+                "p_feasible": 0.1485203440254114,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    0,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.357142857142857,
+                  "prob": 0.015682439874563237
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.783567574749993,
+                  43.59295002052286,
+                  39.456775840794364,
+                  2.617462472048,
+                  2.800452957235849
+                ],
+                "runtime_s": 11.1
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                2,
+                1,
+                1,
+                1
+              ],
+              "objective": 2.4286
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.2,
+                "mean_migc_better": 0.2571428571428572
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.04566276951981212,
+                "p_feasible": 0.08694021623263673,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.4285714285714284,
+                  "prob": 0.01186763305366698
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.070063844294962,
+                  51.75607708939124,
+                  2.455904624685869
+                ],
+                "runtime_s": 4.6
+              },
+              "p=2, size a=2": {
+                "p_better": 0.1173621743210592,
+                "p_feasible": 0.17189186409690704,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    1,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.4285714285714284,
+                  "prob": 0.023553454360861106
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.07783339502484,
+                  22.484046299935248,
+                  38.00505093457931,
+                  2.7130550281064028,
+                  0.685143609787686
+                ],
+                "runtime_s": 14.8
+              },
+              "p=2, rx": {
+                "p_better": 0.04437278463324837,
+                "p_feasible": 0.198929752686457,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    0,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.7142857142857144,
+                  "prob": 0.01921599702674176
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.7960689481757606,
+                  45.837059320744096,
+                  40.316890278391284,
+                  2.676839632064693,
+                  2.8197666236679515
+                ],
+                "runtime_s": 9.3
+              }
+            }
+          },
+          "runtime_s": 101.0
+        },
+        {
+          "x0": [
+            2,
+            0,
+            2,
+            1
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                2,
+                0,
+                2,
+                0
+              ],
+              "objective": 2.0357
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.16666666666666666
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4693877551020408
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.13168470222419057,
+                "p_feasible": 0.14977415598119595,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0357142857142856,
+                  "prob": 0.05403608413090815
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0492276427039962,
+                  49.39697278096398,
+                  0.7251027163961417
+                ],
+                "runtime_s": 6.2
+              },
+              "p=2, size a=2": {
+                "p_better": 0.26867136384212587,
+                "p_feasible": 0.3243969595439863,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0357142857142856,
+                  "prob": 0.14196699128427226
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  0.520852775489301,
+                  48.34259083071249,
+                  43.80389120942049,
+                  0.7897365228816801,
+                  0.5406831915683876
+                ],
+                "runtime_s": 22.8
+              },
+              "p=2, rx": {
+                "p_better": 0.05138204145045051,
+                "p_feasible": 0.18103243912984854,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0357142857142856,
+                  "prob": 0.006302303488268569
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.80672634419533,
+                  47.68650778058015,
+                  45.4424423713046,
+                  2.624422008009963,
+                  2.8192632998158165
+                ],
+                "runtime_s": 16.8
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                2,
+                0,
+                2,
+                0
+              ],
+              "objective": 2.0714
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.16666666666666666
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4693877551020408
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.1316704475141022,
+                "p_feasible": 0.14989593112787747,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.05398305275521022
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0490751005711005,
+                  49.45590071526668,
+                  0.7246247512730111
+                ],
+                "runtime_s": 3.4
+              },
+              "p=2, size a=2": {
+                "p_better": 0.2700293348994088,
+                "p_feasible": 0.326658216536393,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.14338181629655625
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  0.5242281687938263,
+                  48.39769107011125,
+                  43.72695128820264,
+                  0.7896097744276472,
+                  0.5390546885282708
+                ],
+                "runtime_s": 10.5
+              },
+              "p=2, rx": {
+                "p_better": 0.05383373758342409,
+                "p_feasible": 0.1921892512181307,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.006849704628613812
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.805150022163951,
+                  47.74057018573674,
+                  45.71881258058169,
+                  2.6286497157478306,
+                  2.8240240442071998
+                ],
+                "runtime_s": 11.7
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                2,
+                0,
+                2,
+                0
+              ],
+              "objective": 2.1429
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.16666666666666666
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.13636363636363635,
+                "mean_migc_better": 0.28571428571428575
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.13166812546151296,
+                "p_feasible": 0.15017594368955048,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.142857142857143,
+                  "prob": 0.05387475459891381
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0488205555935164,
+                  49.574384275988244,
+                  0.7236209312959375
+                ],
+                "runtime_s": 3.9
+              },
+              "p=2, size a=2": {
+                "p_better": 0.27262746319884695,
+                "p_feasible": 0.3310177863140634,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.142857142857143,
+                  "prob": 0.14615801626360533
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  0.5310604755309208,
+                  48.49590894482232,
+                  43.550309935716115,
+                  0.7896383312782529,
+                  0.5356584373320549
+                ],
+                "runtime_s": 9.5
+              },
+              "p=2, rx": {
+                "p_better": 0.04676371184250339,
+                "p_feasible": 0.2492114119705299,
+                "best_seen": {
+                  "assignment": [
+                    2,
+                    0,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.07142857142857142,
+                  "objective": 2.142857142857143,
+                  "prob": 0.008882204509363289
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8180991846510426,
+                  50.17322504561427,
+                  47.99415669612046,
+                  2.6554442681722237,
+                  2.839919944794186
+                ],
+                "runtime_s": 10.5
+              }
+            }
+          },
+          "runtime_s": 98.0
+        },
+        {
+          "x0": [
+            0,
+            1,
+            2,
+            0
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                0,
+                1,
+                0,
+                0
+              ],
+              "objective": 2.0714
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.21428571428571427
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4489795918367347
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03232570062023277,
+                "p_feasible": 0.1770905211044201,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.01632809542423824
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.916372630593919,
+                  22.372396855676087,
+                  1.86440477967087
+                ],
+                "runtime_s": 3.2
+              },
+              "p=2, size a=2": {
+                "p_better": 0.13214162074570993,
+                "p_feasible": 0.22201011570840695,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.05156173419256116
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.7848972928823312,
+                  29.26630046228709,
+                  35.09240045703574,
+                  2.82439186530759,
+                  2.710806644867806
+                ],
+                "runtime_s": 12.3
+              },
+              "p=2, rx": {
+                "p_better": 0.051346769443149705,
+                "p_feasible": 0.18072381257070874,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.008478121936080435
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8064981591827443,
+                  47.64793506299493,
+                  45.41623631975896,
+                  2.6242903394857753,
+                  2.8191134810496363
+                ],
+                "runtime_s": 14.6
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                0,
+                1,
+                0,
+                0
+              ],
+              "objective": 2.1429
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.21428571428571427
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4489795918367347
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03245793943579013,
+                "p_feasible": 0.1782575064951808,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.0163949922974977
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.9175617583368267,
+                  22.50679630564977,
+                  1.865815326317931
+                ],
+                "runtime_s": 3.2
+              },
+              "p=2, size a=2": {
+                "p_better": 0.134319888431588,
+                "p_feasible": 0.22622392197373611,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.05244303300298964
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.785291521917422,
+                  29.647141134479725,
+                  35.04141794983615,
+                  2.8230913584823507,
+                  2.7143133283729184
+                ],
+                "runtime_s": 11.5
+              },
+              "p=2, rx": {
+                "p_better": 0.053758119532955416,
+                "p_feasible": 0.19165599263989722,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.009278064595044386
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8047122861192753,
+                  47.67059745950942,
+                  45.67167514757877,
+                  2.6284808080611333,
+                  2.8237847409596313
+                ],
+                "runtime_s": 10.3
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                0,
+                1,
+                0,
+                0
+              ],
+              "objective": 2.2857
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.21428571428571427
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.13636363636363635,
+                "mean_migc_better": 0.28571428571428575
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03271473902111881,
+                "p_feasible": 0.1806220749025257,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.016526930735678277
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.9200081137744975,
+                  22.77741436307463,
+                  1.8686706486610674
+                ],
+                "runtime_s": 3.1
+              },
+              "p=2, size a=2": {
+                "p_better": 0.13859957675179058,
+                "p_feasible": 0.23429833399056318,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.05421628231397762
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.7856428809337683,
+                  30.39378935351713,
+                  34.897164960486776,
+                  2.8203021549236986,
+                  2.7208907311526067
+                ],
+                "runtime_s": 12.2
+              },
+              "p=2, rx": {
+                "p_better": 0.04733395681760269,
+                "p_feasible": 0.24426680466145534,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.011814369964150077
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.817034629993272,
+                  49.474643563319844,
+                  47.669795514888555,
+                  2.6543882706045347,
+                  2.8395558096599482
+                ],
+                "runtime_s": 9.6
+              }
+            }
+          },
+          "runtime_s": 82.8
+        },
+        {
+          "x0": [
+            0,
+            2,
+            1,
+            2
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                0,
+                2,
+                0,
+                2
+              ],
+              "objective": 2.0714
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.23809523809523808
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4489795918367347
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03230095733513002,
+                "p_feasible": 0.1770792144180886,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.015726102966360782
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.91620940478925,
+                  22.36019805172255,
+                  1.8641841481502108
+                ],
+                "runtime_s": 2.6
+              },
+              "p=2, size a=2": {
+                "p_better": 0.1319583046871765,
+                "p_feasible": 0.22224927074858955,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.053809162994916844
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.7848272174602586,
+                  29.315514172491252,
+                  35.1112570469925,
+                  2.8239933352878315,
+                  2.7111836093419894
+                ],
+                "runtime_s": 12.6
+              },
+              "p=2, rx": {
+                "p_better": 0.051271718763195195,
+                "p_feasible": 0.18049974762823706,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.006247035617766741
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8061766809821673,
+                  47.63195181699349,
+                  45.427851602649554,
+                  2.624440794852421,
+                  2.8193166828179685
+                ],
+                "runtime_s": 12.6
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                0,
+                2,
+                0,
+                2
+              ],
+              "objective": 2.1429
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.23809523809523808
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4489795918367347
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03243245363369909,
+                "p_feasible": 0.17824707878002244,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.01578786225698758
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.9173869210266274,
+                  22.493921700485224,
+                  1.8655838743422815
+                ],
+                "runtime_s": 2.8
+              },
+              "p=2, size a=2": {
+                "p_better": 0.1342004249432376,
+                "p_feasible": 0.22665701927072301,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.05491965180987826
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.7852222411502154,
+                  29.70828663867772,
+                  35.06407130947115,
+                  2.8226994350908092,
+                  2.714679187316329
+                ],
+                "runtime_s": 13.1
+              },
+              "p=2, rx": {
+                "p_better": 0.053598688385841115,
+                "p_feasible": 0.19141316095483668,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.0067526691187147145
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8040455473646166,
+                  47.653303853116164,
+                  45.71793485939434,
+                  2.6288081229317317,
+                  2.8242270052291722
+                ],
+                "runtime_s": 12.5
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                0,
+                2,
+                0,
+                2
+              ],
+              "objective": 2.2857
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.23809523809523808
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.18181818181818182,
+                "mean_migc_better": 0.3214285714285714
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03269201804904306,
+                "p_feasible": 0.18060084194422316,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.01591036111550518
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.9198055309350903,
+                  22.76245626792171,
+                  1.8684308927063387
+                ],
+                "runtime_s": 2.8
+              },
+              "p=2, size a=2": {
+                "p_better": 0.13921885561113662,
+                "p_feasible": 0.2609205622298457,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.06512192361271778
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8449937349479906,
+                  50.209330565263116,
+                  44.688448975315154,
+                  2.6756720497879845,
+                  2.7382404454173246
+                ],
+                "runtime_s": 14.0
+              },
+              "p=2, rx": {
+                "p_better": 0.04625136939205268,
+                "p_feasible": 0.24778976206314826,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.008692013664003902
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8139262336026656,
+                  49.678792348293435,
+                  48.28198095463654,
+                  2.656626581668926,
+                  2.8400281428128893
+                ],
+                "runtime_s": 11.7
+              }
+            }
+          },
+          "runtime_s": 87.4
+        },
+        {
+          "x0": [
+            0,
+            1,
+            2,
+            1
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                0,
+                1,
+                0,
+                1
+              ],
+              "objective": 2.0714
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.23809523809523808
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.31818181818181823,
+                "mean_migc_better": 0.4489795918367346
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03230095733510808,
+                "p_feasible": 0.1770792293861388,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.015726102968766403
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.916209451492795,
+                  22.360201102583638,
+                  1.864184128070157
+                ],
+                "runtime_s": 3.4
+              },
+              "p=2, size a=2": {
+                "p_better": 0.1319583046867237,
+                "p_feasible": 0.22224897855717377,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.05380915723007432
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.7848270768893593,
+                  29.315475231265175,
+                  35.111239015734824,
+                  2.823993501874089,
+                  2.711183437108004
+                ],
+                "runtime_s": 14.5
+              },
+              "p=2, rx": {
+                "p_better": 0.051271718762781276,
+                "p_feasible": 0.18049971607629695,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.0714285714285716,
+                  "prob": 0.006247032571630017
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8061766996645283,
+                  47.63194318814823,
+                  45.42783611926377,
+                  2.6244408384997007,
+                  2.8193167636428265
+                ],
+                "runtime_s": 15.0
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                0,
+                1,
+                0,
+                1
+              ],
+              "objective": 2.1429
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.23809523809523808
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.3181818181818182,
+                "mean_migc_better": 0.4489795918367347
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03243245363374199,
+                "p_feasible": 0.17824705534703764,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.01578786229153916
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.9173868142161523,
+                  22.493909135073622,
+                  1.8655837747392245
+                ],
+                "runtime_s": 3.8
+              },
+              "p=2, size a=2": {
+                "p_better": 0.13420042494175768,
+                "p_feasible": 0.22665721458464044,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.05491965452245699
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.7852223136147387,
+                  29.70832129306466,
+                  35.064079224960956,
+                  2.822699218061572,
+                  2.7146792736906473
+                ],
+                "runtime_s": 14.2
+              },
+              "p=2, rx": {
+                "p_better": 0.05359868838791454,
+                "p_feasible": 0.19141314224344608,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.142857142857143,
+                  "prob": 0.006752669472041706
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8040455843651877,
+                  47.65332527617365,
+                  45.71792081964793,
+                  2.6288080718710383,
+                  2.8242269257266908
+                ],
+                "runtime_s": 12.5
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                0,
+                1,
+                0,
+                1
+              ],
+              "objective": 2.2857
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.3333333333333333,
+                "mean_migc_better": 0.23809523809523808
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.18181818181818182,
+                "mean_migc_better": 0.32142857142857145
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.03269201804847222,
+                "p_feasible": 0.180600828557471,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.01591036120217411
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.919805353822752,
+                  22.76243907971757,
+                  1.8684307492476198
+                ],
+                "runtime_s": 3.5
+              },
+              "p=2, size a=2": {
+                "p_better": 0.13921885566026282,
+                "p_feasible": 0.26092464396138443,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.0651221559360006
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8450008094172397,
+                  50.20935033927858,
+                  44.688325250940025,
+                  2.6756784427203906,
+                  2.738240893981582
+                ],
+                "runtime_s": 13.9
+              },
+              "p=2, rx": {
+                "p_better": 0.04625136939202845,
+                "p_feasible": 0.24778982165095453,
+                "best_seen": {
+                  "assignment": [
+                    0,
+                    1,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.14285714285714285,
+                  "objective": 2.2857142857142856,
+                  "prob": 0.008692016839244409
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.8139261541152627,
+                  49.67880683550262,
+                  48.28199813826156,
+                  2.6566265353698766,
+                  2.840028126644254
+                ],
+                "runtime_s": 11.4
+              }
+            }
+          },
+          "runtime_s": 94.8
+        },
+        {
+          "x0": [
+            1,
+            2,
+            0,
+            0
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "objective": 2.1071
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.4,
+                "mean_migc_better": 0.4428571428571429
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.04591237314459199,
+                "p_feasible": 0.08653560523564022,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.107142857142857,
+                  "prob": 0.011987468884167962
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.0704369199079196,
+                  51.760227798491194,
+                  2.4533709659210277
+                ],
+                "runtime_s": 3.5
+              },
+              "p=2, size a=2": {
+                "p_better": 0.11584054132496874,
+                "p_feasible": 0.17025392049337246,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.107142857142857,
+                  "prob": 0.023286993152708158
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0782653862045175,
+                  22.396716870685655,
+                  38.26366742004331,
+                  2.710225996979834,
+                  0.6860537090100345
+                ],
+                "runtime_s": 16.0
+              },
+              "p=2, rx": {
+                "p_better": 0.0636602535178938,
+                "p_feasible": 0.13923477106443827,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.1785714285714284,
+                  "prob": 0.014609940038835183
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.784379066789041,
+                  43.35128464472225,
+                  39.35025791749816,
+                  2.6109012984797793,
+                  2.79478474617155
+                ],
+                "runtime_s": 13.5
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "objective": 2.2143
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.39999999999999997,
+                "mean_migc_better": 0.44285714285714295
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.045856536340698015,
+                "p_feasible": 0.08668436660708426,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.2142857142857144,
+                  "prob": 0.011954996988163153
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.0702822777793193,
+                  51.7601739361103,
+                  2.45426078408849
+                ],
+                "runtime_s": 3.7
+              },
+              "p=2, size a=2": {
+                "p_better": 0.11636376758579654,
+                "p_feasible": 0.1708480108504458,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.2142857142857144,
+                  "prob": 0.02336633230716461
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0780013421911367,
+                  22.428857227642382,
+                  38.17327244961409,
+                  2.7111670626580544,
+                  0.6857716592302215
+                ],
+                "runtime_s": 15.1
+              },
+              "p=2, rx": {
+                "p_better": 0.06558006847536234,
+                "p_feasible": 0.14852019811150813,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.357142857142857,
+                  "prob": 0.015682431108883187
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.7835675063564596,
+                  43.59293630499888,
+                  39.45675688938749,
+                  2.617462333037992,
+                  2.8004529756581227
+                ],
+                "runtime_s": 13.4
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "objective": 2.4286
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 0.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.2,
+                "mean_migc_better": 0.2571428571428572
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.04566276951985358,
+                "p_feasible": 0.08694020713635037,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.4285714285714284,
+                  "prob": 0.011868820678691511
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.0700636123602156,
+                  51.756074849103825,
+                  2.455904652869199
+                ],
+                "runtime_s": 4.0
+              },
+              "p=2, size a=2": {
+                "p_better": 0.11736217432484118,
+                "p_feasible": 0.17189223930409253,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.4285714285714284,
+                  "prob": 0.02351374402180209
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0778311384533574,
+                  22.48400659387658,
+                  38.0049662988246,
+                  2.7130538666949384,
+                  0.6851431018786106
+                ],
+                "runtime_s": 14.9
+              },
+              "p=2, rx": {
+                "p_better": 0.04437278463389681,
+                "p_feasible": 0.1989296812106109,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.7142857142857144,
+                  "prob": 0.019215996244627154
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.796068987226953,
+                  45.83706549863574,
+                  40.316882211539586,
+                  2.676839515057133,
+                  2.819766608028375
+                ],
+                "runtime_s": 10.8
+              }
+            }
+          },
+          "runtime_s": 97.6
+        },
+        {
+          "x0": [
+            1,
+            0,
+            2,
+            2
+          ],
+          "mu=0.5": {
+            "exact": {
+              "assignment": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "objective": 2.1071
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 0.5,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 0.5,
+                "d": 2,
+                "p_better": 0.4,
+                "mean_migc_better": 0.4428571428571429
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.04591237314458942,
+                "p_feasible": 0.08653560424433655,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    0,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.107142857142857,
+                  "prob": 0.011993637310135438
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.0704368832873348,
+                  51.76022275517206,
+                  2.453370937936895
+                ],
+                "runtime_s": 3.6
+              },
+              "p=2, size a=2": {
+                "p_better": 0.11584054132887002,
+                "p_feasible": 0.17025223077605517,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    0,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.107142857142857,
+                  "prob": 0.023340482811617245
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0782657557160549,
+                  22.396616008410216,
+                  38.26356596208583,
+                  2.7102324521428134,
+                  0.6860558975588601
+                ],
+                "runtime_s": 14.4
+              },
+              "p=2, rx": {
+                "p_better": 0.06366025348914428,
+                "p_feasible": 0.13923432874178798,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.1785714285714284,
+                  "prob": 0.01461001485805185
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.7843763598533493,
+                  43.35136744313777,
+                  39.35003704279083,
+                  2.6109029854995014,
+                  2.7947843050863677
+                ],
+                "runtime_s": 14.6
+              }
+            }
+          },
+          "mu=1.0": {
+            "exact": {
+              "assignment": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "objective": 2.2143
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 1.0,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 1.0,
+                "d": 2,
+                "p_better": 0.4,
+                "mean_migc_better": 0.4428571428571429
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.045856536340808614,
+                "p_feasible": 0.08668436827864658,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    0,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.2142857142857144,
+                  "prob": 0.011958847518682302
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.0702822945686274,
+                  51.760177418756726,
+                  2.4542607992059033
+                ],
+                "runtime_s": 4.5
+              },
+              "p=2, size a=2": {
+                "p_better": 0.11636376758712454,
+                "p_feasible": 0.17084772622833194,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    0,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.2142857142857144,
+                  "prob": 0.023415579375972717
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0780025349501465,
+                  22.42886703196005,
+                  38.17325437805974,
+                  2.7111670098089333,
+                  0.6857708719143539
+                ],
+                "runtime_s": 17.6
+              },
+              "p=2, rx": {
+                "p_better": 0.06558006847631692,
+                "p_feasible": 0.1485203233192039,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.357142857142857,
+                  "prob": 0.015682445357806156
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.7835679502576207,
+                  43.59293255875008,
+                  39.456748300184834,
+                  2.617462699436386,
+                  2.8004525375749996
+                ],
+                "runtime_s": 16.5
+              }
+            }
+          },
+          "mu=2.0": {
+            "exact": {
+              "assignment": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "objective": 2.4286
+            },
+            "x0": {
+              "objective": 3.0
+            },
+            "BRKGA": {
+              "optimum_rate": 1.0
+            },
+            "random_neighbor": {
+              "d=1": {
+                "mu": 2.0,
+                "d": 1,
+                "p_better": 0.25,
+                "mean_migc_better": 0.39285714285714285
+              },
+              "d=2": {
+                "mu": 2.0,
+                "d": 2,
+                "p_better": 0.2,
+                "mean_migc_better": 0.2571428571428571
+              }
+            },
+            "warm_qaoa": {
+              "p=1, size a=2": {
+                "p_better": 0.04566276951985181,
+                "p_feasible": 0.0869402066395238,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    0,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.4285714285714284,
+                  "prob": 0.011867633080235813
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  2.0700636062555406,
+                  51.75607349909994,
+                  2.4559046462896283
+                ],
+                "runtime_s": 3.2
+              },
+              "p=2, size a=2": {
+                "p_better": 0.1173621743443286,
+                "p_feasible": 0.17189346597541094,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    0,
+                    1,
+                    1
+                  ],
+                  "active_pms": 2,
+                  "migrations": 2,
+                  "migration_cost": 0.21428571428571427,
+                  "objective": 2.4285714285714284,
+                  "prob": 0.023553504571445897
+                },
+                "best_is_optimum": true,
+                "angles": [
+                  1.0778317917565097,
+                  22.484149577142386,
+                  38.00498037257323,
+                  2.7130483650175816,
+                  0.6851425348982858
+                ],
+                "runtime_s": 15.4
+              },
+              "p=2, rx": {
+                "p_better": 0.044372784632431946,
+                "p_feasible": 0.19892979329387653,
+                "best_seen": {
+                  "assignment": [
+                    1,
+                    2,
+                    2,
+                    2
+                  ],
+                  "active_pms": 2,
+                  "migrations": 1,
+                  "migration_cost": 0.35714285714285715,
+                  "objective": 2.7142857142857144,
+                  "prob": 0.019215998627368138
+                },
+                "best_is_optimum": false,
+                "angles": [
+                  2.7960688522641184,
+                  45.83706732525342,
+                  40.31689252012667,
+                  2.67683969797644,
+                  2.8197666882378587
+                ],
+                "runtime_s": 11.5
+              }
+            }
+          },
+          "runtime_s": 104.5
+        }
+      ],
+      "aggregate": {
+        "mu=0.5": {
+          "improvable_x0": 10,
+          "BRKGA_optimum_rate": {
+            "mean": 0.6,
+            "std": 0.5164,
+            "n": 10
+          },
+          "random d=1 P_better": {
+            "mean": 0.3,
+            "std": 0.043,
+            "n": 10
+          },
+          "random d=2 P_better": {
+            "mean": 0.3509,
+            "std": 0.0423,
+            "n": 10
+          },
+          "QAOA p=1, size a=2 P_better": {
+            "mean": 0.0576,
+            "std": 0.0396,
+            "n": 10
+          },
+          "QAOA p=1, size a=2 best1000=opt": 1,
+          "QAOA p=2, size a=2 P_better": {
+            "mean": 0.1529,
+            "std": 0.0615,
+            "n": 10
+          },
+          "QAOA p=2, size a=2 best1000=opt": 1,
+          "QAOA p=2, rx P_better": {
+            "mean": 0.0563,
+            "std": 0.0064,
+            "n": 10
+          },
+          "QAOA p=2, rx best1000=opt": 0.6
+        },
+        "mu=1.0": {
+          "improvable_x0": 10,
+          "BRKGA_optimum_rate": {
+            "mean": 0.6,
+            "std": 0.5164,
+            "n": 10
+          },
+          "random d=1 P_better": {
+            "mean": 0.3,
+            "std": 0.043,
+            "n": 10
+          },
+          "random d=2 P_better": {
+            "mean": 0.3509,
+            "std": 0.0423,
+            "n": 10
+          },
+          "QAOA p=1, size a=2 P_better": {
+            "mean": 0.0577,
+            "std": 0.0395,
+            "n": 10
+          },
+          "QAOA p=1, size a=2 best1000=opt": 1,
+          "QAOA p=2, size a=2 P_better": {
+            "mean": 0.1543,
+            "std": 0.0616,
+            "n": 10
+          },
+          "QAOA p=2, size a=2 best1000=opt": 1,
+          "QAOA p=2, rx P_better": {
+            "mean": 0.0585,
+            "std": 0.0061,
+            "n": 10
+          },
+          "QAOA p=2, rx best1000=opt": 0.6
+        },
+        "mu=2.0": {
+          "improvable_x0": 10,
+          "BRKGA_optimum_rate": {
+            "mean": 0.6,
+            "std": 0.5164,
+            "n": 10
+          },
+          "random d=1 P_better": {
+            "mean": 0.3,
+            "std": 0.043,
+            "n": 10
+          },
+          "random d=2 P_better": {
+            "mean": 0.1709,
+            "std": 0.0305,
+            "n": 10
+          },
+          "QAOA p=1, size a=2 P_better": {
+            "mean": 0.0577,
+            "std": 0.0395,
+            "n": 10
+          },
+          "QAOA p=1, size a=2 best1000=opt": 1,
+          "QAOA p=2, size a=2 P_better": {
+            "mean": 0.157,
+            "std": 0.0618,
+            "n": 10
+          },
+          "QAOA p=2, size a=2 best1000=opt": 1,
+          "QAOA p=2, rx P_better": {
+            "mean": 0.0458,
+            "std": 0.0013,
+            "n": 10
+          },
+          "QAOA p=2, rx best1000=opt": 0.6
+        }
+      },
+      "generated": "2026-11-17T16:48:48"
+    }
+  }
+}
