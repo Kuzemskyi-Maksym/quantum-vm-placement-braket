@@ -5,8 +5,8 @@
     "L21",
     "L28"
   ],
-  "generated": "2026-11-15T18:41:14",
-  "git": "ffaceb6",
+  "generated": "2026-11-17T16:37:01",
+  "git": "7320f4e",
   "levels": [
     {
       "e1": 0,
@@ -914,6 +914,499 @@
       "signal_1pct": false,
       "noiseless_vs_exact_pp": 0.0,
       "runtime_s": 401.0
+    },
+    {
+      "instance": "L21",
+      "n": 21,
+      "p": 2,
+      "topology": "lattice",
+      "grid": "5x5",
+      "cx": 476,
+      "n1q": 105,
+      "depth": 300,
+      "physical_qubits": 25,
+      "angles": [
+        -0.5223485297222806,
+        2.938993479674672,
+        14.97389474663973,
+        45.517808523260285
+      ],
+      "angles_source": "точна оптимізація <Ez> (qaoa_fast, L-BFGS-B)",
+      "exact": {
+        "P_opt": 0.0006906575724268039,
+        "P_feas": 0.019809436758475563
+      },
+      "baseline_opt": 2.86102294921875e-06,
+      "baseline_feas": 4.863739013671875e-05,
+      "levels": [
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0,
+          "e2": 0,
+          "ro": 0,
+          "fidelity": 1,
+          "runtime_s": 0.0,
+          "model_P_opt": 0.0006906575724268039
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0003,
+          "e2": 0.003,
+          "ro": 0.006,
+          "fidelity": 0.2043276311376963,
+          "runtime_s": 0.0,
+          "model_P_opt": 0.00014339686260865506
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0005,
+          "e2": 0.005,
+          "ro": 0.01,
+          "fidelity": 0.07068371371123018,
+          "runtime_s": 0.0,
+          "model_P_opt": 5.147703734406434e-05
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.001,
+          "e2": 0.01,
+          "ro": 0.02,
+          "fidelity": 0.004925796680210816,
+          "runtime_s": 0.0,
+          "model_P_opt": 6.248968909295893e-06
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.002,
+          "e2": 0.02,
+          "ro": 0.03,
+          "fidelity": 2.847903598772991e-05,
+          "runtime_s": 0.0,
+          "model_P_opt": 2.880610731903559e-06
+        }
+      ],
+      "signal_1pct": null,
+      "runtime_s": 0.1
+    },
+    {
+      "instance": "L21",
+      "n": 21,
+      "p": 2,
+      "topology": "all",
+      "grid": null,
+      "cx": 204,
+      "n1q": 105,
+      "depth": 82,
+      "physical_qubits": 21,
+      "angles": [
+        -0.5223485297222806,
+        2.938993479674672,
+        14.97389474663973,
+        45.517808523260285
+      ],
+      "angles_source": "точна оптимізація <Ez> (qaoa_fast, L-BFGS-B)",
+      "exact": {
+        "P_opt": 0.0006906575724268039,
+        "P_feas": 0.019809436758475563
+      },
+      "baseline_opt": 2.86102294921875e-06,
+      "baseline_feas": 4.863739013671875e-05,
+      "levels": [
+        {
+          "P_opt": 0.0006906575724268065,
+          "P_feas": 0.019809436758475633,
+          "se_opt": 0.0,
+          "trajectories": 0,
+          "e1": 0,
+          "e2": 0,
+          "ro": 0,
+          "fidelity": 1,
+          "runtime_s": 0.4,
+          "model_P_opt": 0.0006906575724268039
+        },
+        {
+          "P_opt": 0.00048612059726321424,
+          "P_feas": 0.013771706334524833,
+          "se_opt": 1.1321125143154389e-06,
+          "trajectories": 800,
+          "e1": 0.0003,
+          "e2": 0.003,
+          "ro": 0.006,
+          "fidelity": 0.4626409161248921,
+          "runtime_s": 135.0,
+          "model_P_opt": 0.00032106384870706845
+        },
+        {
+          "P_opt": 0.000381812343712934,
+          "P_feas": 0.010471056374297058,
+          "se_opt": 1.2185337320894353e-06,
+          "trajectories": 800,
+          "e1": 0.0005,
+          "e2": 0.005,
+          "ro": 0.01,
+          "fidelity": 0.2763385003208205,
+          "runtime_s": 142.7,
+          "model_P_opt": 0.00019292568995768966
+        },
+        {
+          "P_opt": 0.00021681806884956176,
+          "P_feas": 0.005749335055035395,
+          "se_opt": 2.7932585722840255e-07,
+          "trajectories": 800,
+          "e1": 0.001,
+          "e2": 0.01,
+          "ro": 0.02,
+          "fidelity": 0.075805994768261,
+          "runtime_s": 145.3,
+          "model_P_opt": 5.500012458054453e-05
+        },
+        {
+          "P_opt": 9.272723234335851e-05,
+          "P_feas": 0.002362120607027178,
+          "se_opt": 4.6282881169908334e-07,
+          "trajectories": 800,
+          "e1": 0.002,
+          "e2": 0.02,
+          "ro": 0.03,
+          "fidelity": 0.006934780128213559,
+          "runtime_s": 150.2,
+          "model_P_opt": 7.630740792789761e-06
+        }
+      ],
+      "signal_1pct": false,
+      "noiseless_vs_exact_pp": 0.0,
+      "runtime_s": 573.7
+    },
+    {
+      "instance": "L28",
+      "n": 28,
+      "p": 1,
+      "topology": "lattice",
+      "grid": "5x6",
+      "cx": 424,
+      "n1q": 84,
+      "depth": 207,
+      "physical_qubits": 30,
+      "angles": [
+        -0.4817183888445285,
+        18.893423436527776
+      ],
+      "angles_source": "перенесено з L21 (точна оптимізація там)",
+      "exact": null,
+      "baseline_opt": 2.682209014892578e-07,
+      "baseline_feas": 1.6987323760986328e-06,
+      "levels": [
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0,
+          "e2": 0,
+          "ro": 0,
+          "fidelity": 1,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0003,
+          "e2": 0.003,
+          "ro": 0.006,
+          "fidelity": 0.23047298377177738,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0005,
+          "e2": 0.005,
+          "ro": 0.01,
+          "fidelity": 0.08640258880655954,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.001,
+          "e2": 0.01,
+          "ro": 0.02,
+          "fidelity": 0.007364675904939688,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.002,
+          "e2": 0.02,
+          "ro": 0.03,
+          "fidelity": 6.86167463910345e-05,
+          "runtime_s": 0.0
+        }
+      ],
+      "signal_1pct": null,
+      "runtime_s": 0.0
+    },
+    {
+      "instance": "L28",
+      "n": 28,
+      "p": 1,
+      "topology": "all",
+      "grid": null,
+      "cx": 176,
+      "n1q": 84,
+      "depth": 65,
+      "physical_qubits": 28,
+      "angles": [
+        -0.4817183888445285,
+        18.893423436527776
+      ],
+      "angles_source": "перенесено з L21 (точна оптимізація там)",
+      "exact": null,
+      "baseline_opt": 2.682209014892578e-07,
+      "baseline_feas": 1.6987323760986328e-06,
+      "levels": [
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0,
+          "e2": 0,
+          "ro": 0,
+          "fidelity": 1,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0003,
+          "e2": 0.003,
+          "ro": 0.006,
+          "fidelity": 0.485535247514365,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0005,
+          "e2": 0.005,
+          "ro": 0.01,
+          "fidelity": 0.2995040711561749,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.001,
+          "e2": 0.01,
+          "ro": 0.02,
+          "fidelity": 0.08904824805809951,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.002,
+          "e2": 0.02,
+          "ro": 0.03,
+          "fidelity": 0.010288767407402852,
+          "runtime_s": 0.0
+        }
+      ],
+      "signal_1pct": null,
+      "runtime_s": 0.0
+    },
+    {
+      "instance": "L28",
+      "n": 28,
+      "p": 2,
+      "topology": "lattice",
+      "grid": "5x6",
+      "cx": 863,
+      "n1q": 140,
+      "depth": 326,
+      "physical_qubits": 30,
+      "angles": [
+        -0.5223485297222806,
+        2.938993479674672,
+        14.97389474663973,
+        45.517808523260285
+      ],
+      "angles_source": "перенесено з L21 (точна оптимізація там)",
+      "exact": null,
+      "baseline_opt": 2.682209014892578e-07,
+      "baseline_feas": 1.6987323760986328e-06,
+      "levels": [
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0,
+          "e2": 0,
+          "ro": 0,
+          "fidelity": 1,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0003,
+          "e2": 0.003,
+          "ro": 0.006,
+          "fidelity": 0.060603440663460274,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0005,
+          "e2": 0.005,
+          "ro": 0.01,
+          "fidelity": 0.00930456160930609,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.001,
+          "e2": 0.01,
+          "ro": 0.02,
+          "fidelity": 8.446395411232796e-05,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.002,
+          "e2": 0.02,
+          "ro": 0.03,
+          "fidelity": 8.629540321188906e-09,
+          "runtime_s": 0.0
+        }
+      ],
+      "signal_1pct": null,
+      "runtime_s": 0.0
+    },
+    {
+      "instance": "L28",
+      "n": 28,
+      "p": 2,
+      "topology": "all",
+      "grid": null,
+      "cx": 352,
+      "n1q": 140,
+      "depth": 97,
+      "physical_qubits": 28,
+      "angles": [
+        -0.5223485297222806,
+        2.938993479674672,
+        14.97389474663973,
+        45.517808523260285
+      ],
+      "angles_source": "перенесено з L21 (точна оптимізація там)",
+      "exact": null,
+      "baseline_opt": 2.682209014892578e-07,
+      "baseline_feas": 1.6987323760986328e-06,
+      "levels": [
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0,
+          "e2": 0,
+          "ro": 0,
+          "fidelity": 1,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0003,
+          "e2": 0.003,
+          "ro": 0.006,
+          "fidelity": 0.2813658493369034,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.0005,
+          "e2": 0.005,
+          "ro": 0.01,
+          "fidelity": 0.12053180347504462,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.001,
+          "e2": 0.01,
+          "ro": 0.02,
+          "fidelity": 0.014357769251609049,
+          "runtime_s": 0.0
+        },
+        {
+          "P_opt": null,
+          "P_feas": null,
+          "se_opt": null,
+          "trajectories": 0,
+          "e1": 0.002,
+          "e2": 0.02,
+          "ro": 0.03,
+          "fidelity": 0.0002627017606317702,
+          "runtime_s": 0.0
+        }
+      ],
+      "signal_1pct": null,
+      "runtime_s": 0.0
     }
   ]
 }

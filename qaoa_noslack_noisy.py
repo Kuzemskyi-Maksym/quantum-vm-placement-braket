@@ -6,7 +6,7 @@ Slack-free QAOA на Aer З ШУМОМ + топологія: решітка (я�
 Режими:
   $env:QAOA_INSTANCE="C"; python qaoa_noslack_noisy.py          # старий режим: p=1,2,3, решітка, 20000 shots
   python qaoa_noslack_noisy.py scaling                           # задача A: C, L18, L21, L28 × p∈{1,2} × обидві топології
-  python qaoa_noslack_noisy.py scaling --inst C,L18 --p 1,2 --topology lattice|all|both --shots 4000 [--grid 8x7]
+  python qaoa_noslack_noisy.py scaling --inst C,L18 --p 1,2 --topology lattice|all|both --shots 4000 [--grid 8x7] [--structure-only]
 
 Режим scaling (2026-11-15, «Масштабування з шумом»):
   - сітка обирається автоматично: c = ⌈√n⌉, r = ⌈n/c⌉ (10 → 3×4, 18 → 4×5, 21 → 5×5, 28 → 5×6), або --grid RxC
@@ -399,7 +399,8 @@ def traj_default(n_, topology):
 
 
 def scaling(names=("C", "L18", "L21", "L28"), ps=(1, 2), topologies=("lattice", "all"), traj=None, grid=None,
-            out="results_noisy_scaling.json"):
+            out="results_noisy_scaling.json", structure_only=False):
+    """structure_only=True — лише CX/глибина/F без траєкторій (рядки для таблиці, коли симуляція задорога)."""
     t_all = time.time()
     payload = dict(instance=list(names), generated=datetime.datetime.now().isoformat(timespec="seconds"), git=git_hash(),
                    levels=[dict(e1=a, e2=b, ro=c) for a, b, c in SCALING_LEVELS], signal_criterion=
@@ -442,7 +443,7 @@ def scaling(names=("C", "L18", "L21", "L28"), ps=(1, 2), topologies=("lattice", 
                            exact=exact, baseline_opt=S["base_opt"], baseline_feas=S["base_feas"], levels=[])
                 print(f"p={p} {tp}{' ' + row['grid'] if row['grid'] else ''}: CX={row['cx']} глибина={row['depth']}"
                       + (f"; точно P(опт)={exact['P_opt']:.4f} P(доп)={exact['P_feas']:.4f}" if exact else ""))
-                simulate = n_ <= EXACT_MAX_N
+                simulate = n_ <= EXACT_MAX_N and not structure_only
                 tqc_p = with_saved_probs(tqc, n_) if simulate else None
                 tr = traj or traj_default(n_, tp)
                 for lev in SCALING_LEVELS:
@@ -457,18 +458,19 @@ def scaling(names=("C", "L18", "L21", "L28"), ps=(1, 2), topologies=("lattice", 
                         m["model_P_opt"] = F * exact["P_opt"] + (1 - F) * S["base_opt"]
                     row["levels"].append(m)
                     print(f"   e2={lev[1]:<6} F={F:.3g}  " + (f"P(опт)={m['P_opt']:.4f} ± {m['se_opt']:.4f}  "
-                          f"P(доп)={m['P_feas']:.4f}  [{m['runtime_s']:.0f} с]" if simulate else "симуляція неможлива (2^n)"))
+                          f"P(доп)={m['P_feas']:.4f}  [{m['runtime_s']:.0f} с]" if simulate else "без симуляції"))
                     sys.stdout.flush()
                 l1 = next(x for x in row["levels"] if x["e2"] == 0.01)
                 row["signal_1pct"] = (bool(l1["P_opt"] >= 10 * S["base_opt"] and l1["P_opt"] >= 0.005)
                                       if l1["P_opt"] is not None else None)
-                if exact:
+                if exact and simulate:
                     row["noiseless_vs_exact_pp"] = round(100 * (row["levels"][0]["P_opt"] - exact["P_opt"]), 4)
                 row["runtime_s"] = round(time.time() - t, 1)
                 payload["rows"].append(row)
                 payload["generated"] = datetime.datetime.now().isoformat(timespec="seconds")
                 json.dump(payload, open(out, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
-    order = {nm: k for k, nm in enumerate(names)}
+    payload["instance"] = sorted({r["instance"] for r in payload["rows"]}, key=lambda v: (len(v), v))
+    order = {nm: k for k, nm in enumerate(["C", "L18", "L21", "L28"])}
     payload["rows"].sort(key=lambda r: (order.get(r["instance"], 99), r["p"], r["topology"] != "lattice"))
     json.dump(payload, open(out, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
     print("\n" + markdown(payload["rows"]))
@@ -482,6 +484,7 @@ if __name__ == "__main__":
         scaling(names=tuple(arg("--inst", "C,L18,L21,L28").split(",")),
                 ps=tuple(int(v) for v in arg("--p", "1,2").split(",")),
                 topologies=("lattice", "all") if topo == "both" else (topo,),
-                traj=int(arg("--traj", 0)) or None, grid=arg("--grid", None))
+                traj=int(arg("--traj", 0)) or None, grid=arg("--grid", None),
+                structure_only="--structure-only" in sys.argv)
     else:
         t = time.time(); main(); print(f"[{time.time()-t:.0f}s]")
