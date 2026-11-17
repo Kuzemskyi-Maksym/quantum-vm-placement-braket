@@ -164,8 +164,16 @@ def table(strats, title):
 
 
 def main(steps=20, servers=12, arrivals=5, mean_life=4, seed=1, seeds=1, mus=(0.5, 1.0, 2.0), trigger="every",
-         with_cpsat=True, cpsat_mus=(1.0,)):
+         with_cpsat=True, cpsat_mus=(1.0,), reuse_cpsat=None):
+    """reuse_cpsat — шлях до попереднього results_lifecycle.json: рядки CP-SAT беруться звідти (не перераховуються;
+    CP-SAT з 8 потоками недетермінований, а BRKGA після виправлення декодера треба перерахувати)."""
     from config import save_results
+    cache = {}
+    if reuse_cpsat:
+        old = json.load(open(reuse_cpsat, encoding="utf-8"))
+        assert old["params"]["seeds"] == [seed + k for k in range(seeds)] and old["params"]["steps"] == steps
+        for sec in ("strategies", "triggers_mu1"):
+            cache.update({k: v for k, v in old[sec].items() if k.startswith("cpsat")})
     scenarios = [(seed + k, gen_scenario(steps, arrivals, mean_life, seed + k)) for k in range(seeds)]
     print(f"ЦОД: {servers} ФС × {CAP} (T={T} → {T*CAP:.0f}), кроків {steps}, прибуття {arrivals} ВМ/крок "
           f"(навантаження {LOAD_RANGE}), середній час життя {mean_life} кроки, seeds {seed}..{seed + seeds - 1}, "
@@ -173,12 +181,12 @@ def main(steps=20, servers=12, arrivals=5, mean_life=4, seed=1, seeds=1, mus=(0.
     specs = [("none", 1.0, "every"), ("repack", 1.0, trigger)] + [("mu", mu, trigger) for mu in mus]
     if with_cpsat:
         specs += [("cpsat", mu, trigger) for mu in cpsat_mus]
-    strategies = run_set(specs, scenarios, servers)
+    strategies = run_set(specs, scenarios, servers, cache=cache)
     trig_specs = [("mu", 1.0, tg) for tg in ("every", "threshold:0.6", "period:3")]
     if with_cpsat:
         trig_specs += [("cpsat", 1.0, tg) for tg in ("every", "threshold:0.6", "period:3")]
     print("\nПорівняння тригерів, μ = 1:")
-    triggers = run_set(trig_specs, scenarios, servers, cache=strategies)
+    triggers = run_set(trig_specs, scenarios, servers, cache={**cache, **strategies})
     print("\n" + table(strategies, f"Стратегії (тригер {trigger}), середнє ± std по {seeds} seed"))
     print("\n" + table(triggers, "Тригери перерозподілу, μ = 1"))
     print("\nФС·кроки — сумарна кількість увімкнених серверів за всі кроки (енергія ∝ цьому);"
@@ -195,4 +203,4 @@ if __name__ == "__main__":
     arg = lambda k, d: type(d)(sys.argv[sys.argv.index(k) + 1]) if k in sys.argv else d
     main(steps=arg("--steps", 20), servers=arg("--servers", 12), arrivals=arg("--arrivals", 5),
          mean_life=arg("--life", 4), seed=arg("--seed", 1), seeds=arg("--seeds", 1), trigger=arg("--trigger", "every"),
-         with_cpsat="--no-cpsat" not in sys.argv)
+         with_cpsat="--no-cpsat" not in sys.argv, reuse_cpsat=arg("--reuse-cpsat", "") or None)

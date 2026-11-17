@@ -34,6 +34,40 @@ def test_brkga_decode_ffd_W():
     assert config.is_feasible(a) and config.active_pms(a) == 2
 
 
+def _decode_legacy(keys, loads, caps):
+    # декодер до виправлення 2026-11-17 (без x0): First Fit за індексом сервера
+    cur, a = [0.0] * len(caps), [None] * len(loads)
+    for j in sorted(range(len(loads)), key=lambda j: keys[j]):
+        t = next((i for i in range(len(caps)) if cur[i] + loads[j] <= caps[i] + 1e-9), None)
+        if t is None:
+            t = min(range(len(caps)), key=lambda i: cur[i] - caps[i])
+        a[j] = t
+        cur[t] += loads[j]
+    return a
+
+
+def test_brkga_decode_without_x0_unchanged():
+    # без x0 декодер (а отже run_brkga(x0=None) і стратегія repack) відтворює старі результати 1:1
+    import brkga
+    rng = np.random.default_rng(7)
+    for _ in range(300):
+        n, m = int(rng.integers(3, 12)), int(rng.integers(2, 6))
+        loads = rng.integers(1, 9, n).tolist()
+        caps = [float(c) for c in rng.integers(8, 15, m)]
+        keys = rng.random(2 * n).tolist()            # навіть з 2N ключами: без x0 прапорці ігноруються
+        assert brkga.decode(keys, None, loads, caps) == _decode_legacy(keys, loads, caps)
+
+
+def test_brkga_migration_reaches_active_server_W():
+    # баг до 2026-11-17: x0=[1,2,1,0] → оптимум [1,2,1,1] (ВМ 3 на вже активний ФС 1) був недосяжний
+    import brkga
+    x0 = [1, 2, 1, 0]
+    keys = [0.0, 0.1, 0.2, 0.3] + [1.0, 1.0, 1.0, 0.0]    # ВМ 0–2 лишаються, ВМ 3 рухається останньою
+    assert brkga.decode(keys, x0) == [1, 2, 1, 1]
+    runs = [brkga.run_brkga(seed=s, x0=x0, mu=1.0) for s in range(5)]
+    assert all(r["objective"] == pytest.approx(config.objective([1, 2, 1, 1], x0=x0, mu=1.0)) for r in runs)
+
+
 def test_noslack_build_C():
     # (в) інстанс C: оптимум 2 ФС, частка оптимальних станів 1/128
     from qaoa_noslack import build, INSTANCES
