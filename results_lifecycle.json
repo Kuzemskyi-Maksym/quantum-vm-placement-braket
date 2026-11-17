@@ -648,20 +648,20 @@
       "mean": {
         "mean_active": 3.945,
         "server_steps": 78.9,
-        "total_migrations": 35.6,
-        "total_migrated_load": 162.2,
+        "total_migrations": 35.4,
+        "total_migrated_load": 162.8,
         "mean_lower_bound": 3.94,
         "reconsolidations": 20,
-        "runtime_s": 6.594667040003697
+        "runtime_s": 5.972087290007766
       },
       "std": {
         "mean_active": 0.45610062242643096,
         "server_steps": 9.12201244852862,
-        "total_migrations": 4.880801391392834,
-        "total_migrated_load": 33.35932320123483,
+        "total_migrations": 4.718756898449704,
+        "total_migrated_load": 34.334304193393,
         "mean_lower_bound": 0.4635610950984658,
         "reconsolidations": 0.0,
-        "runtime_s": 2.6468699527227413
+        "runtime_s": 2.310060873884394
       },
       "per_seed": [
         {
@@ -757,14 +757,18 @@
         {
           "mean_active": 4.25,
           "server_steps": 85,
-          "total_migrations": 40,
-          "total_migrated_load": 209,
+          "total_migrations": 38,
+          "total_migrated_load": 215,
           "mean_lower_bound": 4.25,
           "reconsolidations": 20,
-          "runtime_s": 10.60301719995914,
-          "seed": 10
+          "runtime_s": 4.377219699999841,
+          "seed": 10,
+          "cpsat_status": {
+            "OPTIMAL": 20
+          }
         }
-      ]
+      ],
+      "note": "seed 10 перераховано 2026-11-17 зі статусами (усі 20 кроків OPTIMAL): у старому прогоні сумарний час seed 10 10.6 с ≥ ліміту 10 с на крок, тож один крок міг завершитись FEASIBLE; решта seed-ів < 10 с → лише OPTIMAL"
     }
   },
   "triggers_mu1": {
@@ -1138,20 +1142,20 @@
       "mean": {
         "mean_active": 3.945,
         "server_steps": 78.9,
-        "total_migrations": 35.6,
-        "total_migrated_load": 162.2,
+        "total_migrations": 35.4,
+        "total_migrated_load": 162.8,
         "mean_lower_bound": 3.94,
         "reconsolidations": 20,
-        "runtime_s": 6.594667040003697
+        "runtime_s": 5.972087290007766
       },
       "std": {
         "mean_active": 0.45610062242643096,
         "server_steps": 9.12201244852862,
-        "total_migrations": 4.880801391392834,
-        "total_migrated_load": 33.35932320123483,
+        "total_migrations": 4.718756898449704,
+        "total_migrated_load": 34.334304193393,
         "mean_lower_bound": 0.4635610950984658,
         "reconsolidations": 0.0,
-        "runtime_s": 2.6468699527227413
+        "runtime_s": 2.310060873884394
       },
       "per_seed": [
         {
@@ -1247,14 +1251,18 @@
         {
           "mean_active": 4.25,
           "server_steps": 85,
-          "total_migrations": 40,
-          "total_migrated_load": 209,
+          "total_migrations": 38,
+          "total_migrated_load": 215,
           "mean_lower_bound": 4.25,
           "reconsolidations": 20,
-          "runtime_s": 10.60301719995914,
-          "seed": 10
+          "runtime_s": 4.377219699999841,
+          "seed": 10,
+          "cpsat_status": {
+            "OPTIMAL": 20
+          }
         }
-      ]
+      ],
+      "note": "seed 10 перераховано 2026-11-17 зі статусами (усі 20 кроків OPTIMAL): у старому прогоні сумарний час seed 10 10.6 с ≥ ліміту 10 с на крок, тож один крок міг завершитись FEASIBLE; решта seed-ів < 10 с → лише OPTIMAL"
     },
     "cpsat mu=1.0 [threshold:0.6]": {
       "mean": {

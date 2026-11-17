@@ -23,7 +23,7 @@
 Результат: results_lifecycle.json = {instance, generated, git, params, strategies: {назва: {mean, std, per_seed}},
            triggers_mu1: {…}}
 """
-import json, math, sys, time, random, statistics
+import collections, json, math, sys, time, random, statistics
 from brkga import run_brkga
 from placement_new import best_fit_decreasing, residual
 
@@ -85,6 +85,7 @@ def simulate(strategy, scenario, m, mu=1.0, brkga_seed=0, trigger="every", cpsat
         # (3) перерозподіл — алгоритм 1 (якщо спрацював тригер)
         mig_n = mig_load = 0
         ran = False
+        status = None
         if vms and strategy != "none" and triggered(trigger, step, vms):
             ran = True
             loads = [v["load"] for v in vms]
@@ -93,6 +94,7 @@ def simulate(strategy, scenario, m, mu=1.0, brkga_seed=0, trigger="every", cpsat
                 from cp_sat import solve_cpsat
                 r = solve_cpsat(loads, caps, x0=x0, mu=mu, time_limit=cpsat_limit, t=T)
                 new = r["assignment"]
+                status = r["status"]                 # OPTIMAL / FEASIBLE (ліміт часу) / ...
             else:
                 r = run_brkga(loads=loads, caps=caps, x0=(None if strategy == "repack" else x0),
                               mu=(0.0 if strategy == "repack" else mu), seed=brkga_seed + step)
@@ -106,7 +108,8 @@ def simulate(strategy, scenario, m, mu=1.0, brkga_seed=0, trigger="every", cpsat
         hist.append(dict(step=step, n_vms=len(vms), total_load=total,
                          active=len({v["server"] for v in vms}),
                          lower_bound=math.ceil(total / (T * CAP) - 1e-9) if total else 0,
-                         migrations=mig_n, migrated_load=mig_load, reconsolidated=ran))
+                         migrations=mig_n, migrated_load=mig_load, reconsolidated=ran,
+                         **({"cpsat_status": status} if status else {})))
     ok = [h for h in hist if "overflow" not in h]
     name = {"mu": f"mu={mu}", "cpsat": f"cpsat mu={mu}"}.get(strategy, strategy)
     return dict(strategy=name + ("" if trigger == "every" else f" [{trigger}]"),
@@ -117,7 +120,9 @@ def simulate(strategy, scenario, m, mu=1.0, brkga_seed=0, trigger="every", cpsat
                 total_migrated_load=sum(h["migrated_load"] for h in ok),
                 total_load_steps=sum(h["total_load"] for h in ok),
                 reconsolidations=sum(h["reconsolidated"] for h in ok),
-                runtime_s=time.perf_counter() - t_start, history=hist)
+                runtime_s=time.perf_counter() - t_start, history=hist,
+                **({"cpsat_status": dict(collections.Counter(h["cpsat_status"] for h in ok if "cpsat_status" in h))}
+                   if strategy == "cpsat" else {}))
 
 
 def _agg(runs):
@@ -125,7 +130,8 @@ def _agg(runs):
     keys = METRICS + ("mean_lower_bound", "reconsolidations", "runtime_s")
     mean = {k: statistics.mean(r[k] for r in runs) for k in keys}
     std = {k: (statistics.stdev(r[k] for r in runs) if len(runs) > 1 else 0.0) for k in keys}
-    per = [dict({k: r[k] for k in keys}, seed=r["seed"]) for r in runs]
+    per = [dict({k: r[k] for k in keys}, seed=r["seed"], **({"cpsat_status": r["cpsat_status"]}
+                                                            if "cpsat_status" in r else {})) for r in runs]
     return dict(mean=mean, std=std, per_seed=per)
 
 
