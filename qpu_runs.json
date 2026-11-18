@@ -1,0 +1,195 @@
+[
+  {
+    "task_id": "arn:aws:braket:us-west-1:573086082388:quantum-task/a2e64c8f-f719-48fe-8b00-a4e9214c241a",
+    "device": "rigetti",
+    "script": "qaoa_noslack_real_qpu.py",
+    "shots": 1000,
+    "est_cost_usd": 0.725,
+    "submitted_utc": "2026-11-18T12:21:02+00:00",
+    "params": {
+      "instance": "C",
+      "p": 2,
+      "control": false,
+      "angles": [
+        2.6099,
+        -0.2392,
+        7.734,
+        19.4393
+      ]
+    },
+    "result": {
+      "label": "Rigetti Cepheus-1-108Q",
+      "shots": 1000,
+      "P_feasible": 0.008,
+      "P_optimal": 0.008,
+      "P_onehot": 0.043,
+      "baseline_feasible": 0.0078125,
+      "baseline_optimal": 0.0078125,
+      "std_err_optimal": 0.0028170906978654416
+    },
+    "fetched_utc": "2026-11-18T12:54:44+00:00"
+  },
+  {
+    "task_id": "arn:aws:braket:us-west-1:573086082388:quantum-task/419a4235-d2bc-4477-80bf-00a2308973a1",
+    "device": "rigetti",
+    "script": "qaoa_noslack_real_qpu.py",
+    "shots": 700,
+    "est_cost_usd": 0.597,
+    "submitted_utc": "2026-11-18T12:21:12+00:00",
+    "params": {
+      "instance": "C",
+      "p": 2,
+      "control": true,
+      "angles": [
+        1.0718,
+        0.0845,
+        1.3846,
+        1.1584
+      ]
+    },
+    "result": {
+      "label": "Rigetti Cepheus-1-108Q",
+      "shots": 700,
+      "P_feasible": 0.0071428571428571435,
+      "P_optimal": 0.0071428571428571435,
+      "P_onehot": 0.07285714285714286,
+      "baseline_feasible": 0.0078125,
+      "baseline_optimal": 0.0078125,
+      "std_err_optimal": 0.003182953869486168
+    },
+    "fetched_utc": "2026-11-18T12:54:52+00:00"
+  },
+  {
+    "task_id": "arn:aws:braket:us-west-1:573086082388:quantum-task/2a8571f8-f4c2-487e-bd8c-287419e55de0",
+    "device": "rigetti",
+    "script": "warm_start_real_qpu.py",
+    "shots": 1000,
+    "est_cost_usd": 0.725,
+    "submitted_utc": "2026-11-18T12:21:40+00:00",
+    "params": {
+      "instance": "W",
+      "p": 1,
+      "control": false,
+      "mu": 1.0,
+      "mixer": "size",
+      "alpha": 2.0,
+      "angles": [
+        2.0703,
+        51.7602,
+        2.4543
+      ]
+    },
+    "result": {
+      "label": "Rigetti Cepheus-1-108Q",
+      "shots": 1000,
+      "mu": 1.0,
+      "mixer": "size",
+      "alpha": 2.0,
+      "F_x0": 3.0,
+      "P_better": 0.002,
+      "std_err_better": 0.0014127986409959489,
+      "P_feasible": 0.004,
+      "P_onehot": 0.030000000000000002,
+      "mean_migc_better": 0.9285714285714286,
+      "baseline_better": 0.00054931640625,
+      "baseline_feasible": 0.00238037109375,
+      "best_seen": {
+        "assignment": [
+          2,
+          0,
+          0,
+          2
+        ],
+        "active_pms": 2,
+        "migrations": 3,
+        "migration_cost": 0.9285714285714286,
+        "objective": 2.928571428571429,
+        "count": 1
+      }
+    },
+    "fetched_utc": "2026-11-18T12:54:59+00:00"
+  },
+  {
+    "task_id": "arn:aws:braket:us-west-1:573086082388:quantum-task/59e41b2b-06c0-465f-bbee-647389941672",
+    "device": "rigetti",
+    "script": "warm_start_real_qpu.py",
+    "shots": 700,
+    "est_cost_usd": 0.597,
+    "submitted_utc": "2026-11-18T12:21:54+00:00",
+    "params": {
+      "instance": "W",
+      "p": 1,
+      "control": true,
+      "mu": 1.0,
+      "mixer": "size",
+      "alpha": 2.0,
+      "angles": [
+        2.1437,
+        3.3817,
+        0.6923
+      ]
+    },
+    "result": {
+      "label": "Rigetti Cepheus-1-108Q",
+      "shots": 700,
+      "mu": 1.0,
+      "mixer": "size",
+      "alpha": 2.0,
+      "F_x0": 3.0,
+      "P_better": 0.0,
+      "std_err_better": 0.0,
+      "P_feasible": 0.0,
+      "P_onehot": 0.03142857142857143,
+      "mean_migc_better": 0.0,
+      "baseline_better": 0.00054931640625,
+      "baseline_feasible": 0.00238037109375,
+      "best_seen": null
+    },
+    "fetched_utc": "2026-11-18T12:55:06+00:00"
+  },
+  {
+    "task_id": "arn:aws:braket:us-west-1:573086082388:quantum-task/ecfbc4d6-1257-40f7-af10-f68106d3f95e",
+    "device": "rigetti",
+    "script": "placement_new.py",
+    "shots": 1000,
+    "est_cost_usd": 0.725,
+    "submitted_utc": "2026-11-18T12:22:33+00:00",
+    "params": {
+      "instance": "new3-4",
+      "new": [
+        3,
+        4
+      ],
+      "p": 3,
+      "control": false,
+      "angles": [
+        2.6011,
+        -0.3352,
+        -0.2316,
+        3.979,
+        11.6088,
+        23.3851
+      ]
+    },
+    "result": {
+      "label": "Rigetti Cepheus-1-108Q",
+      "shots": 1000,
+      "n_qubits": 7,
+      "P_optimal": 0.038,
+      "std_err_optimal": 0.006046155803483731,
+      "P_feasible": 0.038,
+      "P_onehot": 0.163,
+      "baseline_optimal": 0.0234375,
+      "baseline_feasible": 0.0234375,
+      "best_seen": {
+        "assignment": [
+          2,
+          2
+        ],
+        "new_servers": 1,
+        "count": 15
+      }
+    },
+    "fetched_utc": "2026-11-18T12:55:16+00:00"
+  }
+]

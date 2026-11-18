@@ -21,6 +21,12 @@ DEVICES = {
                     qubits=54, connectivity="lattice", per_task=0.30, per_shot=0.0016, confirm_above_usd=10),
     "forte": dict(name="IonQ Forte-1", arn="arn:aws:braket:us-east-1::device/qpu/ionq/Forte-1", region="us-east-1",
                   qubits=36, connectivity="all-to-all", per_task=0.30, per_shot=0.08, confirm_above_usd=0),
+    # додано 2026-11-18, поки обидва IQM на обслуговуванні (Emerald до 2026-11-21)
+    "aqt": dict(name="AQT IBEX Q1", arn="arn:aws:braket:eu-north-1::device/qpu/aqt/IBEX-Q1", region="eu-north-1",
+                qubits=12, connectivity="all-to-all", per_task=0.30, per_shot=0.0235, confirm_above_usd=10),
+    "rigetti": dict(name="Rigetti Cepheus-1-108Q", arn="arn:aws:braket:us-west-1::device/qpu/rigetti/Cepheus-1-108Q",
+                    region="us-west-1", qubits=108, connectivity="lattice", per_task=0.30, per_shot=0.000425,
+                    confirm_above_usd=10),
 }
 LOG = "qpu_runs.json"
 
@@ -76,7 +82,8 @@ def check_ready(device, n_qubits_needed):
     except Exception as e:
         print("  властивості недоступні:", e)
     if device.status != "ONLINE":
-        print("  УВАГА: пристрій не ONLINE — задача стоятиме в черзі")
+        sys.exit(f"  Пристрій {device.status}: Braket не прийме задачу (DeviceOfflineException). Повторіть пізніше; "
+                 f"причину й термін дивіться в консолі Braket на сторінці пристрою.")
 
 
 def confirm(dev, shots):
